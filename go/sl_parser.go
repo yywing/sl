@@ -33,16 +33,21 @@ var SLParserStaticData struct {
 func slParserInit() {
 	staticData := &SLParserStaticData
 	staticData.LiteralNames = []string{
-		"", "'=='", "'!='", "'in'", "'<'", "'<='", "'>='", "'>'", "'&&'", "'||'",
+		"", "'false'", "'null'", "'true'", "'as'", "'break'", "'const'", "'continue'",
+		"'else'", "'for'", "'function'", "'if'", "'import'", "'in'", "'let'",
+		"'loop'", "'package'", "'namespace'", "'return'", "'var'", "'void'",
+		"'while'", "'=='", "'!='", "'<'", "'<='", "'>='", "'>'", "'&&'", "'||'",
 		"'['", "']'", "'{'", "'}'", "'('", "')'", "'.'", "','", "'-'", "'!'",
-		"'?'", "':'", "'+'", "'*'", "'/'", "'%'", "'true'", "'false'", "'null'",
+		"'?'", "':'", "'+'", "'*'", "'/'", "'%'",
 	}
 	staticData.SymbolicNames = []string{
-		"", "EQUALS", "NOT_EQUALS", "IN", "LESS", "LESS_EQUALS", "GREATER_EQUALS",
-		"GREATER", "LOGICAL_AND", "LOGICAL_OR", "LBRACKET", "RPRACKET", "LBRACE",
-		"RBRACE", "LPAREN", "RPAREN", "DOT", "COMMA", "MINUS", "EXCLAM", "QUESTIONMARK",
-		"COLON", "PLUS", "STAR", "SLASH", "PERCENT", "SL_TRUE", "SL_FALSE",
-		"NUL", "WHITESPACE", "COMMENT", "NUM_FLOAT", "NUM_INT", "NUM_UINT",
+		"", "FALSE", "NULL", "TRUE", "AS", "BREAK", "CONST", "CONTINUE", "ELSE",
+		"FOR", "FUNCTION", "IF", "IMPORT", "IN", "LET", "LOOP", "PACKAGE", "NAMESPACE",
+		"RETURN", "VAR", "VOID", "WHILE", "EQUALS", "NOT_EQUALS", "LESS", "LESS_EQUALS",
+		"GREATER_EQUALS", "GREATER", "LOGICAL_AND", "LOGICAL_OR", "LBRACKET",
+		"RPRACKET", "LBRACE", "RBRACE", "LPAREN", "RPAREN", "DOT", "COMMA",
+		"MINUS", "EXCLAM", "QUESTIONMARK", "COLON", "PLUS", "STAR", "SLASH",
+		"PERCENT", "WHITESPACE", "COMMENT", "NUM_FLOAT", "NUM_INT", "NUM_UINT",
 		"STRING", "BYTES", "IDENTIFIER", "ESC_IDENTIFIER",
 	}
 	staticData.RuleNames = []string{
@@ -52,7 +57,7 @@ func slParserInit() {
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 37, 259, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 54, 259, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7,
 		10, 2, 11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 2, 14, 7, 14, 2, 15, 7, 15,
 		2, 16, 7, 16, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3,
@@ -79,94 +84,94 @@ func slParserInit() {
 		15, 1, 15, 1, 15, 1, 16, 3, 16, 244, 8, 16, 1, 16, 1, 16, 1, 16, 3, 16,
 		249, 8, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 3, 16, 257, 8, 16,
 		1, 16, 0, 3, 8, 10, 14, 17, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22,
-		24, 26, 28, 30, 32, 0, 3, 1, 0, 1, 7, 1, 0, 23, 25, 2, 0, 18, 18, 22, 22,
-		290, 0, 34, 1, 0, 0, 0, 2, 37, 1, 0, 0, 0, 4, 45, 1, 0, 0, 0, 6, 53, 1,
-		0, 0, 0, 8, 61, 1, 0, 0, 0, 10, 72, 1, 0, 0, 0, 12, 99, 1, 0, 0, 0, 14,
-		101, 1, 0, 0, 0, 16, 184, 1, 0, 0, 0, 18, 186, 1, 0, 0, 0, 20, 194, 1,
-		0, 0, 0, 22, 202, 1, 0, 0, 0, 24, 216, 1, 0, 0, 0, 26, 220, 1, 0, 0, 0,
-		28, 235, 1, 0, 0, 0, 30, 238, 1, 0, 0, 0, 32, 256, 1, 0, 0, 0, 34, 35,
-		3, 2, 1, 0, 35, 36, 5, 0, 0, 1, 36, 1, 1, 0, 0, 0, 37, 43, 3, 4, 2, 0,
-		38, 39, 5, 20, 0, 0, 39, 40, 3, 4, 2, 0, 40, 41, 5, 21, 0, 0, 41, 42, 3,
-		2, 1, 0, 42, 44, 1, 0, 0, 0, 43, 38, 1, 0, 0, 0, 43, 44, 1, 0, 0, 0, 44,
-		3, 1, 0, 0, 0, 45, 50, 3, 6, 3, 0, 46, 47, 5, 9, 0, 0, 47, 49, 3, 6, 3,
-		0, 48, 46, 1, 0, 0, 0, 49, 52, 1, 0, 0, 0, 50, 48, 1, 0, 0, 0, 50, 51,
-		1, 0, 0, 0, 51, 5, 1, 0, 0, 0, 52, 50, 1, 0, 0, 0, 53, 58, 3, 8, 4, 0,
-		54, 55, 5, 8, 0, 0, 55, 57, 3, 8, 4, 0, 56, 54, 1, 0, 0, 0, 57, 60, 1,
-		0, 0, 0, 58, 56, 1, 0, 0, 0, 58, 59, 1, 0, 0, 0, 59, 7, 1, 0, 0, 0, 60,
-		58, 1, 0, 0, 0, 61, 62, 6, 4, -1, 0, 62, 63, 3, 10, 5, 0, 63, 69, 1, 0,
-		0, 0, 64, 65, 10, 1, 0, 0, 65, 66, 7, 0, 0, 0, 66, 68, 3, 8, 4, 2, 67,
-		64, 1, 0, 0, 0, 68, 71, 1, 0, 0, 0, 69, 67, 1, 0, 0, 0, 69, 70, 1, 0, 0,
-		0, 70, 9, 1, 0, 0, 0, 71, 69, 1, 0, 0, 0, 72, 73, 6, 5, -1, 0, 73, 74,
-		3, 12, 6, 0, 74, 83, 1, 0, 0, 0, 75, 76, 10, 2, 0, 0, 76, 77, 7, 1, 0,
-		0, 77, 82, 3, 10, 5, 3, 78, 79, 10, 1, 0, 0, 79, 80, 7, 2, 0, 0, 80, 82,
-		3, 10, 5, 2, 81, 75, 1, 0, 0, 0, 81, 78, 1, 0, 0, 0, 82, 85, 1, 0, 0, 0,
-		83, 81, 1, 0, 0, 0, 83, 84, 1, 0, 0, 0, 84, 11, 1, 0, 0, 0, 85, 83, 1,
-		0, 0, 0, 86, 100, 3, 14, 7, 0, 87, 89, 5, 19, 0, 0, 88, 87, 1, 0, 0, 0,
-		89, 90, 1, 0, 0, 0, 90, 88, 1, 0, 0, 0, 90, 91, 1, 0, 0, 0, 91, 92, 1,
-		0, 0, 0, 92, 100, 3, 14, 7, 0, 93, 95, 5, 18, 0, 0, 94, 93, 1, 0, 0, 0,
-		95, 96, 1, 0, 0, 0, 96, 94, 1, 0, 0, 0, 96, 97, 1, 0, 0, 0, 97, 98, 1,
-		0, 0, 0, 98, 100, 3, 14, 7, 0, 99, 86, 1, 0, 0, 0, 99, 88, 1, 0, 0, 0,
-		99, 94, 1, 0, 0, 0, 100, 13, 1, 0, 0, 0, 101, 102, 6, 7, -1, 0, 102, 103,
-		3, 16, 8, 0, 103, 128, 1, 0, 0, 0, 104, 105, 10, 3, 0, 0, 105, 107, 5,
-		16, 0, 0, 106, 108, 5, 20, 0, 0, 107, 106, 1, 0, 0, 0, 107, 108, 1, 0,
-		0, 0, 108, 109, 1, 0, 0, 0, 109, 127, 3, 28, 14, 0, 110, 111, 10, 2, 0,
-		0, 111, 112, 5, 16, 0, 0, 112, 113, 5, 36, 0, 0, 113, 115, 5, 14, 0, 0,
-		114, 116, 3, 18, 9, 0, 115, 114, 1, 0, 0, 0, 115, 116, 1, 0, 0, 0, 116,
-		117, 1, 0, 0, 0, 117, 127, 5, 15, 0, 0, 118, 119, 10, 1, 0, 0, 119, 121,
-		5, 10, 0, 0, 120, 122, 5, 20, 0, 0, 121, 120, 1, 0, 0, 0, 121, 122, 1,
-		0, 0, 0, 122, 123, 1, 0, 0, 0, 123, 124, 3, 2, 1, 0, 124, 125, 5, 11, 0,
+		24, 26, 28, 30, 32, 0, 3, 2, 0, 13, 13, 22, 27, 1, 0, 43, 45, 2, 0, 38,
+		38, 42, 42, 290, 0, 34, 1, 0, 0, 0, 2, 37, 1, 0, 0, 0, 4, 45, 1, 0, 0,
+		0, 6, 53, 1, 0, 0, 0, 8, 61, 1, 0, 0, 0, 10, 72, 1, 0, 0, 0, 12, 99, 1,
+		0, 0, 0, 14, 101, 1, 0, 0, 0, 16, 184, 1, 0, 0, 0, 18, 186, 1, 0, 0, 0,
+		20, 194, 1, 0, 0, 0, 22, 202, 1, 0, 0, 0, 24, 216, 1, 0, 0, 0, 26, 220,
+		1, 0, 0, 0, 28, 235, 1, 0, 0, 0, 30, 238, 1, 0, 0, 0, 32, 256, 1, 0, 0,
+		0, 34, 35, 3, 2, 1, 0, 35, 36, 5, 0, 0, 1, 36, 1, 1, 0, 0, 0, 37, 43, 3,
+		4, 2, 0, 38, 39, 5, 40, 0, 0, 39, 40, 3, 4, 2, 0, 40, 41, 5, 41, 0, 0,
+		41, 42, 3, 2, 1, 0, 42, 44, 1, 0, 0, 0, 43, 38, 1, 0, 0, 0, 43, 44, 1,
+		0, 0, 0, 44, 3, 1, 0, 0, 0, 45, 50, 3, 6, 3, 0, 46, 47, 5, 29, 0, 0, 47,
+		49, 3, 6, 3, 0, 48, 46, 1, 0, 0, 0, 49, 52, 1, 0, 0, 0, 50, 48, 1, 0, 0,
+		0, 50, 51, 1, 0, 0, 0, 51, 5, 1, 0, 0, 0, 52, 50, 1, 0, 0, 0, 53, 58, 3,
+		8, 4, 0, 54, 55, 5, 28, 0, 0, 55, 57, 3, 8, 4, 0, 56, 54, 1, 0, 0, 0, 57,
+		60, 1, 0, 0, 0, 58, 56, 1, 0, 0, 0, 58, 59, 1, 0, 0, 0, 59, 7, 1, 0, 0,
+		0, 60, 58, 1, 0, 0, 0, 61, 62, 6, 4, -1, 0, 62, 63, 3, 10, 5, 0, 63, 69,
+		1, 0, 0, 0, 64, 65, 10, 1, 0, 0, 65, 66, 7, 0, 0, 0, 66, 68, 3, 8, 4, 2,
+		67, 64, 1, 0, 0, 0, 68, 71, 1, 0, 0, 0, 69, 67, 1, 0, 0, 0, 69, 70, 1,
+		0, 0, 0, 70, 9, 1, 0, 0, 0, 71, 69, 1, 0, 0, 0, 72, 73, 6, 5, -1, 0, 73,
+		74, 3, 12, 6, 0, 74, 83, 1, 0, 0, 0, 75, 76, 10, 2, 0, 0, 76, 77, 7, 1,
+		0, 0, 77, 82, 3, 10, 5, 3, 78, 79, 10, 1, 0, 0, 79, 80, 7, 2, 0, 0, 80,
+		82, 3, 10, 5, 2, 81, 75, 1, 0, 0, 0, 81, 78, 1, 0, 0, 0, 82, 85, 1, 0,
+		0, 0, 83, 81, 1, 0, 0, 0, 83, 84, 1, 0, 0, 0, 84, 11, 1, 0, 0, 0, 85, 83,
+		1, 0, 0, 0, 86, 100, 3, 14, 7, 0, 87, 89, 5, 39, 0, 0, 88, 87, 1, 0, 0,
+		0, 89, 90, 1, 0, 0, 0, 90, 88, 1, 0, 0, 0, 90, 91, 1, 0, 0, 0, 91, 92,
+		1, 0, 0, 0, 92, 100, 3, 14, 7, 0, 93, 95, 5, 38, 0, 0, 94, 93, 1, 0, 0,
+		0, 95, 96, 1, 0, 0, 0, 96, 94, 1, 0, 0, 0, 96, 97, 1, 0, 0, 0, 97, 98,
+		1, 0, 0, 0, 98, 100, 3, 14, 7, 0, 99, 86, 1, 0, 0, 0, 99, 88, 1, 0, 0,
+		0, 99, 94, 1, 0, 0, 0, 100, 13, 1, 0, 0, 0, 101, 102, 6, 7, -1, 0, 102,
+		103, 3, 16, 8, 0, 103, 128, 1, 0, 0, 0, 104, 105, 10, 3, 0, 0, 105, 107,
+		5, 36, 0, 0, 106, 108, 5, 40, 0, 0, 107, 106, 1, 0, 0, 0, 107, 108, 1,
+		0, 0, 0, 108, 109, 1, 0, 0, 0, 109, 127, 3, 28, 14, 0, 110, 111, 10, 2,
+		0, 0, 111, 112, 5, 36, 0, 0, 112, 113, 5, 53, 0, 0, 113, 115, 5, 34, 0,
+		0, 114, 116, 3, 18, 9, 0, 115, 114, 1, 0, 0, 0, 115, 116, 1, 0, 0, 0, 116,
+		117, 1, 0, 0, 0, 117, 127, 5, 35, 0, 0, 118, 119, 10, 1, 0, 0, 119, 121,
+		5, 30, 0, 0, 120, 122, 5, 40, 0, 0, 121, 120, 1, 0, 0, 0, 121, 122, 1,
+		0, 0, 0, 122, 123, 1, 0, 0, 0, 123, 124, 3, 2, 1, 0, 124, 125, 5, 31, 0,
 		0, 125, 127, 1, 0, 0, 0, 126, 104, 1, 0, 0, 0, 126, 110, 1, 0, 0, 0, 126,
 		118, 1, 0, 0, 0, 127, 130, 1, 0, 0, 0, 128, 126, 1, 0, 0, 0, 128, 129,
-		1, 0, 0, 0, 129, 15, 1, 0, 0, 0, 130, 128, 1, 0, 0, 0, 131, 133, 5, 16,
+		1, 0, 0, 0, 129, 15, 1, 0, 0, 0, 130, 128, 1, 0, 0, 0, 131, 133, 5, 36,
 		0, 0, 132, 131, 1, 0, 0, 0, 132, 133, 1, 0, 0, 0, 133, 134, 1, 0, 0, 0,
-		134, 185, 5, 36, 0, 0, 135, 137, 5, 16, 0, 0, 136, 135, 1, 0, 0, 0, 136,
-		137, 1, 0, 0, 0, 137, 138, 1, 0, 0, 0, 138, 139, 5, 36, 0, 0, 139, 141,
-		5, 14, 0, 0, 140, 142, 3, 18, 9, 0, 141, 140, 1, 0, 0, 0, 141, 142, 1,
-		0, 0, 0, 142, 143, 1, 0, 0, 0, 143, 185, 5, 15, 0, 0, 144, 145, 5, 14,
-		0, 0, 145, 146, 3, 2, 1, 0, 146, 147, 5, 15, 0, 0, 147, 185, 1, 0, 0, 0,
-		148, 150, 5, 10, 0, 0, 149, 151, 3, 20, 10, 0, 150, 149, 1, 0, 0, 0, 150,
-		151, 1, 0, 0, 0, 151, 153, 1, 0, 0, 0, 152, 154, 5, 17, 0, 0, 153, 152,
-		1, 0, 0, 0, 153, 154, 1, 0, 0, 0, 154, 155, 1, 0, 0, 0, 155, 185, 5, 11,
-		0, 0, 156, 158, 5, 12, 0, 0, 157, 159, 3, 26, 13, 0, 158, 157, 1, 0, 0,
-		0, 158, 159, 1, 0, 0, 0, 159, 161, 1, 0, 0, 0, 160, 162, 5, 17, 0, 0, 161,
+		134, 185, 5, 53, 0, 0, 135, 137, 5, 36, 0, 0, 136, 135, 1, 0, 0, 0, 136,
+		137, 1, 0, 0, 0, 137, 138, 1, 0, 0, 0, 138, 139, 5, 53, 0, 0, 139, 141,
+		5, 34, 0, 0, 140, 142, 3, 18, 9, 0, 141, 140, 1, 0, 0, 0, 141, 142, 1,
+		0, 0, 0, 142, 143, 1, 0, 0, 0, 143, 185, 5, 35, 0, 0, 144, 145, 5, 34,
+		0, 0, 145, 146, 3, 2, 1, 0, 146, 147, 5, 35, 0, 0, 147, 185, 1, 0, 0, 0,
+		148, 150, 5, 30, 0, 0, 149, 151, 3, 20, 10, 0, 150, 149, 1, 0, 0, 0, 150,
+		151, 1, 0, 0, 0, 151, 153, 1, 0, 0, 0, 152, 154, 5, 37, 0, 0, 153, 152,
+		1, 0, 0, 0, 153, 154, 1, 0, 0, 0, 154, 155, 1, 0, 0, 0, 155, 185, 5, 31,
+		0, 0, 156, 158, 5, 32, 0, 0, 157, 159, 3, 26, 13, 0, 158, 157, 1, 0, 0,
+		0, 158, 159, 1, 0, 0, 0, 159, 161, 1, 0, 0, 0, 160, 162, 5, 37, 0, 0, 161,
 		160, 1, 0, 0, 0, 161, 162, 1, 0, 0, 0, 162, 163, 1, 0, 0, 0, 163, 185,
-		5, 13, 0, 0, 164, 166, 5, 16, 0, 0, 165, 164, 1, 0, 0, 0, 165, 166, 1,
-		0, 0, 0, 166, 167, 1, 0, 0, 0, 167, 172, 5, 36, 0, 0, 168, 169, 5, 16,
-		0, 0, 169, 171, 5, 36, 0, 0, 170, 168, 1, 0, 0, 0, 171, 174, 1, 0, 0, 0,
+		5, 33, 0, 0, 164, 166, 5, 36, 0, 0, 165, 164, 1, 0, 0, 0, 165, 166, 1,
+		0, 0, 0, 166, 167, 1, 0, 0, 0, 167, 172, 5, 53, 0, 0, 168, 169, 5, 36,
+		0, 0, 169, 171, 5, 53, 0, 0, 170, 168, 1, 0, 0, 0, 171, 174, 1, 0, 0, 0,
 		172, 170, 1, 0, 0, 0, 172, 173, 1, 0, 0, 0, 173, 175, 1, 0, 0, 0, 174,
-		172, 1, 0, 0, 0, 175, 177, 5, 12, 0, 0, 176, 178, 3, 22, 11, 0, 177, 176,
-		1, 0, 0, 0, 177, 178, 1, 0, 0, 0, 178, 180, 1, 0, 0, 0, 179, 181, 5, 17,
+		172, 1, 0, 0, 0, 175, 177, 5, 32, 0, 0, 176, 178, 3, 22, 11, 0, 177, 176,
+		1, 0, 0, 0, 177, 178, 1, 0, 0, 0, 178, 180, 1, 0, 0, 0, 179, 181, 5, 37,
 		0, 0, 180, 179, 1, 0, 0, 0, 180, 181, 1, 0, 0, 0, 181, 182, 1, 0, 0, 0,
-		182, 185, 5, 13, 0, 0, 183, 185, 3, 32, 16, 0, 184, 132, 1, 0, 0, 0, 184,
+		182, 185, 5, 33, 0, 0, 183, 185, 3, 32, 16, 0, 184, 132, 1, 0, 0, 0, 184,
 		136, 1, 0, 0, 0, 184, 144, 1, 0, 0, 0, 184, 148, 1, 0, 0, 0, 184, 156,
 		1, 0, 0, 0, 184, 165, 1, 0, 0, 0, 184, 183, 1, 0, 0, 0, 185, 17, 1, 0,
-		0, 0, 186, 191, 3, 2, 1, 0, 187, 188, 5, 17, 0, 0, 188, 190, 3, 2, 1, 0,
+		0, 0, 186, 191, 3, 2, 1, 0, 187, 188, 5, 37, 0, 0, 188, 190, 3, 2, 1, 0,
 		189, 187, 1, 0, 0, 0, 190, 193, 1, 0, 0, 0, 191, 189, 1, 0, 0, 0, 191,
 		192, 1, 0, 0, 0, 192, 19, 1, 0, 0, 0, 193, 191, 1, 0, 0, 0, 194, 199, 3,
-		30, 15, 0, 195, 196, 5, 17, 0, 0, 196, 198, 3, 30, 15, 0, 197, 195, 1,
+		30, 15, 0, 195, 196, 5, 37, 0, 0, 196, 198, 3, 30, 15, 0, 197, 195, 1,
 		0, 0, 0, 198, 201, 1, 0, 0, 0, 199, 197, 1, 0, 0, 0, 199, 200, 1, 0, 0,
 		0, 200, 21, 1, 0, 0, 0, 201, 199, 1, 0, 0, 0, 202, 203, 3, 24, 12, 0, 203,
-		204, 5, 21, 0, 0, 204, 212, 3, 2, 1, 0, 205, 206, 5, 17, 0, 0, 206, 207,
-		3, 24, 12, 0, 207, 208, 5, 21, 0, 0, 208, 209, 3, 2, 1, 0, 209, 211, 1,
+		204, 5, 41, 0, 0, 204, 212, 3, 2, 1, 0, 205, 206, 5, 37, 0, 0, 206, 207,
+		3, 24, 12, 0, 207, 208, 5, 41, 0, 0, 208, 209, 3, 2, 1, 0, 209, 211, 1,
 		0, 0, 0, 210, 205, 1, 0, 0, 0, 211, 214, 1, 0, 0, 0, 212, 210, 1, 0, 0,
 		0, 212, 213, 1, 0, 0, 0, 213, 23, 1, 0, 0, 0, 214, 212, 1, 0, 0, 0, 215,
-		217, 5, 20, 0, 0, 216, 215, 1, 0, 0, 0, 216, 217, 1, 0, 0, 0, 217, 218,
+		217, 5, 40, 0, 0, 216, 215, 1, 0, 0, 0, 216, 217, 1, 0, 0, 0, 217, 218,
 		1, 0, 0, 0, 218, 219, 3, 28, 14, 0, 219, 25, 1, 0, 0, 0, 220, 221, 3, 30,
-		15, 0, 221, 222, 5, 21, 0, 0, 222, 230, 3, 2, 1, 0, 223, 224, 5, 17, 0,
-		0, 224, 225, 3, 30, 15, 0, 225, 226, 5, 21, 0, 0, 226, 227, 3, 2, 1, 0,
+		15, 0, 221, 222, 5, 41, 0, 0, 222, 230, 3, 2, 1, 0, 223, 224, 5, 37, 0,
+		0, 224, 225, 3, 30, 15, 0, 225, 226, 5, 41, 0, 0, 226, 227, 3, 2, 1, 0,
 		227, 229, 1, 0, 0, 0, 228, 223, 1, 0, 0, 0, 229, 232, 1, 0, 0, 0, 230,
 		228, 1, 0, 0, 0, 230, 231, 1, 0, 0, 0, 231, 27, 1, 0, 0, 0, 232, 230, 1,
-		0, 0, 0, 233, 236, 5, 36, 0, 0, 234, 236, 5, 37, 0, 0, 235, 233, 1, 0,
-		0, 0, 235, 234, 1, 0, 0, 0, 236, 29, 1, 0, 0, 0, 237, 239, 5, 20, 0, 0,
+		0, 0, 0, 233, 236, 5, 53, 0, 0, 234, 236, 5, 54, 0, 0, 235, 233, 1, 0,
+		0, 0, 235, 234, 1, 0, 0, 0, 236, 29, 1, 0, 0, 0, 237, 239, 5, 40, 0, 0,
 		238, 237, 1, 0, 0, 0, 238, 239, 1, 0, 0, 0, 239, 240, 1, 0, 0, 0, 240,
-		241, 3, 2, 1, 0, 241, 31, 1, 0, 0, 0, 242, 244, 5, 18, 0, 0, 243, 242,
-		1, 0, 0, 0, 243, 244, 1, 0, 0, 0, 244, 245, 1, 0, 0, 0, 245, 257, 5, 32,
-		0, 0, 246, 257, 5, 33, 0, 0, 247, 249, 5, 18, 0, 0, 248, 247, 1, 0, 0,
-		0, 248, 249, 1, 0, 0, 0, 249, 250, 1, 0, 0, 0, 250, 257, 5, 31, 0, 0, 251,
-		257, 5, 34, 0, 0, 252, 257, 5, 35, 0, 0, 253, 257, 5, 26, 0, 0, 254, 257,
-		5, 27, 0, 0, 255, 257, 5, 28, 0, 0, 256, 243, 1, 0, 0, 0, 256, 246, 1,
-		0, 0, 0, 256, 248, 1, 0, 0, 0, 256, 251, 1, 0, 0, 0, 256, 252, 1, 0, 0,
-		0, 256, 253, 1, 0, 0, 0, 256, 254, 1, 0, 0, 0, 256, 255, 1, 0, 0, 0, 257,
+		241, 3, 2, 1, 0, 241, 31, 1, 0, 0, 0, 242, 244, 5, 38, 0, 0, 243, 242,
+		1, 0, 0, 0, 243, 244, 1, 0, 0, 0, 244, 245, 1, 0, 0, 0, 245, 257, 5, 49,
+		0, 0, 246, 257, 5, 50, 0, 0, 247, 249, 5, 38, 0, 0, 248, 247, 1, 0, 0,
+		0, 248, 249, 1, 0, 0, 0, 249, 250, 1, 0, 0, 0, 250, 257, 5, 48, 0, 0, 251,
+		257, 5, 51, 0, 0, 252, 257, 5, 52, 0, 0, 253, 257, 5, 3, 0, 0, 254, 257,
+		5, 1, 0, 0, 255, 257, 5, 2, 0, 0, 256, 243, 1, 0, 0, 0, 256, 246, 1, 0,
+		0, 0, 256, 248, 1, 0, 0, 0, 256, 251, 1, 0, 0, 0, 256, 252, 1, 0, 0, 0,
+		256, 253, 1, 0, 0, 0, 256, 254, 1, 0, 0, 0, 256, 255, 1, 0, 0, 0, 257,
 		33, 1, 0, 0, 0, 36, 43, 50, 58, 69, 81, 83, 90, 96, 99, 107, 115, 121,
 		126, 128, 132, 136, 141, 150, 153, 158, 161, 165, 172, 177, 180, 184, 191,
 		199, 212, 216, 230, 235, 238, 243, 248, 256,
@@ -208,43 +213,60 @@ func NewSLParser(input antlr.TokenStream) *SLParser {
 // SLParser tokens.
 const (
 	SLParserEOF            = antlr.TokenEOF
-	SLParserEQUALS         = 1
-	SLParserNOT_EQUALS     = 2
-	SLParserIN             = 3
-	SLParserLESS           = 4
-	SLParserLESS_EQUALS    = 5
-	SLParserGREATER_EQUALS = 6
-	SLParserGREATER        = 7
-	SLParserLOGICAL_AND    = 8
-	SLParserLOGICAL_OR     = 9
-	SLParserLBRACKET       = 10
-	SLParserRPRACKET       = 11
-	SLParserLBRACE         = 12
-	SLParserRBRACE         = 13
-	SLParserLPAREN         = 14
-	SLParserRPAREN         = 15
-	SLParserDOT            = 16
-	SLParserCOMMA          = 17
-	SLParserMINUS          = 18
-	SLParserEXCLAM         = 19
-	SLParserQUESTIONMARK   = 20
-	SLParserCOLON          = 21
-	SLParserPLUS           = 22
-	SLParserSTAR           = 23
-	SLParserSLASH          = 24
-	SLParserPERCENT        = 25
-	SLParserSL_TRUE        = 26
-	SLParserSL_FALSE       = 27
-	SLParserNUL            = 28
-	SLParserWHITESPACE     = 29
-	SLParserCOMMENT        = 30
-	SLParserNUM_FLOAT      = 31
-	SLParserNUM_INT        = 32
-	SLParserNUM_UINT       = 33
-	SLParserSTRING         = 34
-	SLParserBYTES          = 35
-	SLParserIDENTIFIER     = 36
-	SLParserESC_IDENTIFIER = 37
+	SLParserFALSE          = 1
+	SLParserNULL           = 2
+	SLParserTRUE           = 3
+	SLParserAS             = 4
+	SLParserBREAK          = 5
+	SLParserCONST          = 6
+	SLParserCONTINUE       = 7
+	SLParserELSE           = 8
+	SLParserFOR            = 9
+	SLParserFUNCTION       = 10
+	SLParserIF             = 11
+	SLParserIMPORT         = 12
+	SLParserIN             = 13
+	SLParserLET            = 14
+	SLParserLOOP           = 15
+	SLParserPACKAGE        = 16
+	SLParserNAMESPACE      = 17
+	SLParserRETURN         = 18
+	SLParserVAR            = 19
+	SLParserVOID           = 20
+	SLParserWHILE          = 21
+	SLParserEQUALS         = 22
+	SLParserNOT_EQUALS     = 23
+	SLParserLESS           = 24
+	SLParserLESS_EQUALS    = 25
+	SLParserGREATER_EQUALS = 26
+	SLParserGREATER        = 27
+	SLParserLOGICAL_AND    = 28
+	SLParserLOGICAL_OR     = 29
+	SLParserLBRACKET       = 30
+	SLParserRPRACKET       = 31
+	SLParserLBRACE         = 32
+	SLParserRBRACE         = 33
+	SLParserLPAREN         = 34
+	SLParserRPAREN         = 35
+	SLParserDOT            = 36
+	SLParserCOMMA          = 37
+	SLParserMINUS          = 38
+	SLParserEXCLAM         = 39
+	SLParserQUESTIONMARK   = 40
+	SLParserCOLON          = 41
+	SLParserPLUS           = 42
+	SLParserSTAR           = 43
+	SLParserSLASH          = 44
+	SLParserPERCENT        = 45
+	SLParserWHITESPACE     = 46
+	SLParserCOMMENT        = 47
+	SLParserNUM_FLOAT      = 48
+	SLParserNUM_INT        = 49
+	SLParserNUM_UINT       = 50
+	SLParserSTRING         = 51
+	SLParserBYTES          = 52
+	SLParserIDENTIFIER     = 53
+	SLParserESC_IDENTIFIER = 54
 )
 
 // SLParser rules.
@@ -675,11 +697,11 @@ type IConditionalOrContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
-	// GetS9 returns the s9 token.
-	GetS9() antlr.Token
+	// GetS29 returns the s29 token.
+	GetS29() antlr.Token
 
-	// SetS9 sets the s9 token.
-	SetS9(antlr.Token)
+	// SetS29 sets the s29 token.
+	SetS29(antlr.Token)
 
 	// GetOps returns the ops token list.
 	GetOps() []antlr.Token
@@ -719,7 +741,7 @@ type ConditionalOrContext struct {
 	antlr.BaseParserRuleContext
 	parser          antlr.Parser
 	e               IConditionalAndContext
-	s9              antlr.Token
+	s29             antlr.Token
 	ops             []antlr.Token
 	_conditionalAnd IConditionalAndContext
 	e1              []IConditionalAndContext
@@ -752,9 +774,9 @@ func NewConditionalOrContext(parser antlr.Parser, parent antlr.ParserRuleContext
 
 func (s *ConditionalOrContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *ConditionalOrContext) GetS9() antlr.Token { return s.s9 }
+func (s *ConditionalOrContext) GetS29() antlr.Token { return s.s29 }
 
-func (s *ConditionalOrContext) SetS9(v antlr.Token) { s.s9 = v }
+func (s *ConditionalOrContext) SetS29(v antlr.Token) { s.s29 = v }
 
 func (s *ConditionalOrContext) GetOps() []antlr.Token { return s.ops }
 
@@ -877,13 +899,13 @@ func (p *SLParser) ConditionalOr() (localctx IConditionalOrContext) {
 
 			var _m = p.Match(SLParserLOGICAL_OR)
 
-			localctx.(*ConditionalOrContext).s9 = _m
+			localctx.(*ConditionalOrContext).s29 = _m
 			if p.HasError() {
 				// Recognition error - abort rule
 				goto errorExit
 			}
 		}
-		localctx.(*ConditionalOrContext).ops = append(localctx.(*ConditionalOrContext).ops, localctx.(*ConditionalOrContext).s9)
+		localctx.(*ConditionalOrContext).ops = append(localctx.(*ConditionalOrContext).ops, localctx.(*ConditionalOrContext).s29)
 		{
 			p.SetState(47)
 
@@ -921,11 +943,11 @@ type IConditionalAndContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
-	// GetS8 returns the s8 token.
-	GetS8() antlr.Token
+	// GetS28 returns the s28 token.
+	GetS28() antlr.Token
 
-	// SetS8 sets the s8 token.
-	SetS8(antlr.Token)
+	// SetS28 sets the s28 token.
+	SetS28(antlr.Token)
 
 	// GetOps returns the ops token list.
 	GetOps() []antlr.Token
@@ -965,7 +987,7 @@ type ConditionalAndContext struct {
 	antlr.BaseParserRuleContext
 	parser    antlr.Parser
 	e         IRelationContext
-	s8        antlr.Token
+	s28       antlr.Token
 	ops       []antlr.Token
 	_relation IRelationContext
 	e1        []IRelationContext
@@ -998,9 +1020,9 @@ func NewConditionalAndContext(parser antlr.Parser, parent antlr.ParserRuleContex
 
 func (s *ConditionalAndContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *ConditionalAndContext) GetS8() antlr.Token { return s.s8 }
+func (s *ConditionalAndContext) GetS28() antlr.Token { return s.s28 }
 
-func (s *ConditionalAndContext) SetS8(v antlr.Token) { s.s8 = v }
+func (s *ConditionalAndContext) SetS28(v antlr.Token) { s.s28 = v }
 
 func (s *ConditionalAndContext) GetOps() []antlr.Token { return s.ops }
 
@@ -1123,13 +1145,13 @@ func (p *SLParser) ConditionalAnd() (localctx IConditionalAndContext) {
 
 			var _m = p.Match(SLParserLOGICAL_AND)
 
-			localctx.(*ConditionalAndContext).s8 = _m
+			localctx.(*ConditionalAndContext).s28 = _m
 			if p.HasError() {
 				// Recognition error - abort rule
 				goto errorExit
 			}
 		}
-		localctx.(*ConditionalAndContext).ops = append(localctx.(*ConditionalAndContext).ops, localctx.(*ConditionalAndContext).s8)
+		localctx.(*ConditionalAndContext).ops = append(localctx.(*ConditionalAndContext).ops, localctx.(*ConditionalAndContext).s28)
 		{
 			p.SetState(55)
 
@@ -1397,7 +1419,7 @@ func (p *SLParser) relation(_p int) (localctx IRelationContext) {
 
 				_la = p.GetTokenStream().LA(1)
 
-				if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&254) != 0) {
+				if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&264249344) != 0) {
 					var _ri = p.GetErrorHandler().RecoverInline(p)
 
 					localctx.(*RelationContext).op = _ri
@@ -1671,7 +1693,7 @@ func (p *SLParser) calc(_p int) (localctx ICalcContext) {
 
 					_la = p.GetTokenStream().LA(1)
 
-					if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&58720256) != 0) {
+					if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&61572651155456) != 0) {
 						var _ri = p.GetErrorHandler().RecoverInline(p)
 
 						localctx.(*CalcContext).op = _ri
@@ -1802,7 +1824,7 @@ func (s *UnaryContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) 
 
 type LogicalNotContext struct {
 	UnaryContext
-	s19 antlr.Token
+	s39 antlr.Token
 	ops []antlr.Token
 }
 
@@ -1816,9 +1838,9 @@ func NewLogicalNotContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *Log
 	return p
 }
 
-func (s *LogicalNotContext) GetS19() antlr.Token { return s.s19 }
+func (s *LogicalNotContext) GetS39() antlr.Token { return s.s39 }
 
-func (s *LogicalNotContext) SetS19(v antlr.Token) { s.s19 = v }
+func (s *LogicalNotContext) SetS39(v antlr.Token) { s.s39 = v }
 
 func (s *LogicalNotContext) GetOps() []antlr.Token { return s.ops }
 
@@ -1932,7 +1954,7 @@ func (s *MemberExprContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 
 type NegateContext struct {
 	UnaryContext
-	s18 antlr.Token
+	s38 antlr.Token
 	ops []antlr.Token
 }
 
@@ -1946,9 +1968,9 @@ func NewNegateContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NegateC
 	return p
 }
 
-func (s *NegateContext) GetS18() antlr.Token { return s.s18 }
+func (s *NegateContext) GetS38() antlr.Token { return s.s38 }
 
-func (s *NegateContext) SetS18(v antlr.Token) { s.s18 = v }
+func (s *NegateContext) SetS38(v antlr.Token) { s.s38 = v }
 
 func (s *NegateContext) GetOps() []antlr.Token { return s.ops }
 
@@ -2042,13 +2064,13 @@ func (p *SLParser) Unary() (localctx IUnaryContext) {
 
 				var _m = p.Match(SLParserEXCLAM)
 
-				localctx.(*LogicalNotContext).s19 = _m
+				localctx.(*LogicalNotContext).s39 = _m
 				if p.HasError() {
 					// Recognition error - abort rule
 					goto errorExit
 				}
 			}
-			localctx.(*LogicalNotContext).ops = append(localctx.(*LogicalNotContext).ops, localctx.(*LogicalNotContext).s19)
+			localctx.(*LogicalNotContext).ops = append(localctx.(*LogicalNotContext).ops, localctx.(*LogicalNotContext).s39)
 
 			p.SetState(90)
 			p.GetErrorHandler().Sync(p)
@@ -2079,13 +2101,13 @@ func (p *SLParser) Unary() (localctx IUnaryContext) {
 
 					var _m = p.Match(SLParserMINUS)
 
-					localctx.(*NegateContext).s18 = _m
+					localctx.(*NegateContext).s38 = _m
 					if p.HasError() {
 						// Recognition error - abort rule
 						goto errorExit
 					}
 				}
-				localctx.(*NegateContext).ops = append(localctx.(*NegateContext).ops, localctx.(*NegateContext).s18)
+				localctx.(*NegateContext).ops = append(localctx.(*NegateContext).ops, localctx.(*NegateContext).s38)
 
 			default:
 				p.SetError(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
@@ -2681,7 +2703,7 @@ func (p *SLParser) member(_p int) (localctx IMemberContext) {
 				}
 				_la = p.GetTokenStream().LA(1)
 
-				if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&135762105344) != 0 {
+				if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&17733839434547214) != 0 {
 					{
 						p.SetState(114)
 
@@ -3184,7 +3206,7 @@ type CreateMessageContext struct {
 	leadingDot  antlr.Token
 	_IDENTIFIER antlr.Token
 	ids         []antlr.Token
-	s16         antlr.Token
+	s36         antlr.Token
 	ops         []antlr.Token
 	op          antlr.Token
 	entries     IFieldInitializerListContext
@@ -3204,7 +3226,7 @@ func (s *CreateMessageContext) GetLeadingDot() antlr.Token { return s.leadingDot
 
 func (s *CreateMessageContext) Get_IDENTIFIER() antlr.Token { return s._IDENTIFIER }
 
-func (s *CreateMessageContext) GetS16() antlr.Token { return s.s16 }
+func (s *CreateMessageContext) GetS36() antlr.Token { return s.s36 }
 
 func (s *CreateMessageContext) GetOp() antlr.Token { return s.op }
 
@@ -3212,7 +3234,7 @@ func (s *CreateMessageContext) SetLeadingDot(v antlr.Token) { s.leadingDot = v }
 
 func (s *CreateMessageContext) Set_IDENTIFIER(v antlr.Token) { s._IDENTIFIER = v }
 
-func (s *CreateMessageContext) SetS16(v antlr.Token) { s.s16 = v }
+func (s *CreateMessageContext) SetS36(v antlr.Token) { s.s36 = v }
 
 func (s *CreateMessageContext) SetOp(v antlr.Token) { s.op = v }
 
@@ -3492,7 +3514,7 @@ func (p *SLParser) Primary() (localctx IPrimaryContext) {
 		}
 		_la = p.GetTokenStream().LA(1)
 
-		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&135762105344) != 0 {
+		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&17733839434547214) != 0 {
 			{
 				p.SetState(140)
 
@@ -3559,7 +3581,7 @@ func (p *SLParser) Primary() (localctx IPrimaryContext) {
 		}
 		_la = p.GetTokenStream().LA(1)
 
-		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&135763153920) != 0 {
+		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&17734938946174990) != 0 {
 			{
 				p.SetState(149)
 
@@ -3617,7 +3639,7 @@ func (p *SLParser) Primary() (localctx IPrimaryContext) {
 		}
 		_la = p.GetTokenStream().LA(1)
 
-		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&135763153920) != 0 {
+		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&17734938946174990) != 0 {
 			{
 				p.SetState(157)
 
@@ -3703,13 +3725,13 @@ func (p *SLParser) Primary() (localctx IPrimaryContext) {
 
 				var _m = p.Match(SLParserDOT)
 
-				localctx.(*CreateMessageContext).s16 = _m
+				localctx.(*CreateMessageContext).s36 = _m
 				if p.HasError() {
 					// Recognition error - abort rule
 					goto errorExit
 				}
 			}
-			localctx.(*CreateMessageContext).ops = append(localctx.(*CreateMessageContext).ops, localctx.(*CreateMessageContext).s16)
+			localctx.(*CreateMessageContext).ops = append(localctx.(*CreateMessageContext).ops, localctx.(*CreateMessageContext).s36)
 			{
 				p.SetState(169)
 
@@ -3748,7 +3770,7 @@ func (p *SLParser) Primary() (localctx IPrimaryContext) {
 		}
 		_la = p.GetTokenStream().LA(1)
 
-		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&206159478784) != 0 {
+		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&27022697275850752) != 0 {
 			{
 				p.SetState(176)
 
@@ -4244,11 +4266,11 @@ type IFieldInitializerListContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
-	// GetS21 returns the s21 token.
-	GetS21() antlr.Token
+	// GetS41 returns the s41 token.
+	GetS41() antlr.Token
 
-	// SetS21 sets the s21 token.
-	SetS21(antlr.Token)
+	// SetS41 sets the s41 token.
+	SetS41(antlr.Token)
 
 	// GetCols returns the cols token list.
 	GetCols() []antlr.Token
@@ -4299,7 +4321,7 @@ type FieldInitializerListContext struct {
 	parser    antlr.Parser
 	_optField IOptFieldContext
 	fields    []IOptFieldContext
-	s21       antlr.Token
+	s41       antlr.Token
 	cols      []antlr.Token
 	_expr     IExprContext
 	values    []IExprContext
@@ -4332,9 +4354,9 @@ func NewFieldInitializerListContext(parser antlr.Parser, parent antlr.ParserRule
 
 func (s *FieldInitializerListContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *FieldInitializerListContext) GetS21() antlr.Token { return s.s21 }
+func (s *FieldInitializerListContext) GetS41() antlr.Token { return s.s41 }
 
-func (s *FieldInitializerListContext) SetS21(v antlr.Token) { s.s21 = v }
+func (s *FieldInitializerListContext) SetS41(v antlr.Token) { s.s41 = v }
 
 func (s *FieldInitializerListContext) GetCols() []antlr.Token { return s.cols }
 
@@ -4503,13 +4525,13 @@ func (p *SLParser) FieldInitializerList() (localctx IFieldInitializerListContext
 
 		var _m = p.Match(SLParserCOLON)
 
-		localctx.(*FieldInitializerListContext).s21 = _m
+		localctx.(*FieldInitializerListContext).s41 = _m
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	localctx.(*FieldInitializerListContext).cols = append(localctx.(*FieldInitializerListContext).cols, localctx.(*FieldInitializerListContext).s21)
+	localctx.(*FieldInitializerListContext).cols = append(localctx.(*FieldInitializerListContext).cols, localctx.(*FieldInitializerListContext).s41)
 	{
 		p.SetState(204)
 
@@ -4550,13 +4572,13 @@ func (p *SLParser) FieldInitializerList() (localctx IFieldInitializerListContext
 
 				var _m = p.Match(SLParserCOLON)
 
-				localctx.(*FieldInitializerListContext).s21 = _m
+				localctx.(*FieldInitializerListContext).s41 = _m
 				if p.HasError() {
 					// Recognition error - abort rule
 					goto errorExit
 				}
 			}
-			localctx.(*FieldInitializerListContext).cols = append(localctx.(*FieldInitializerListContext).cols, localctx.(*FieldInitializerListContext).s21)
+			localctx.(*FieldInitializerListContext).cols = append(localctx.(*FieldInitializerListContext).cols, localctx.(*FieldInitializerListContext).s41)
 			{
 				p.SetState(208)
 
@@ -4751,11 +4773,11 @@ type IMapInitializerListContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
-	// GetS21 returns the s21 token.
-	GetS21() antlr.Token
+	// GetS41 returns the s41 token.
+	GetS41() antlr.Token
 
-	// SetS21 sets the s21 token.
-	SetS21(antlr.Token)
+	// SetS41 sets the s41 token.
+	SetS41(antlr.Token)
 
 	// GetCols returns the cols token list.
 	GetCols() []antlr.Token
@@ -4806,7 +4828,7 @@ type MapInitializerListContext struct {
 	parser   antlr.Parser
 	_optExpr IOptExprContext
 	keys     []IOptExprContext
-	s21      antlr.Token
+	s41      antlr.Token
 	cols     []antlr.Token
 	_expr    IExprContext
 	values   []IExprContext
@@ -4839,9 +4861,9 @@ func NewMapInitializerListContext(parser antlr.Parser, parent antlr.ParserRuleCo
 
 func (s *MapInitializerListContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *MapInitializerListContext) GetS21() antlr.Token { return s.s21 }
+func (s *MapInitializerListContext) GetS41() antlr.Token { return s.s41 }
 
-func (s *MapInitializerListContext) SetS21(v antlr.Token) { s.s21 = v }
+func (s *MapInitializerListContext) SetS41(v antlr.Token) { s.s41 = v }
 
 func (s *MapInitializerListContext) GetCols() []antlr.Token { return s.cols }
 
@@ -5010,13 +5032,13 @@ func (p *SLParser) MapInitializerList() (localctx IMapInitializerListContext) {
 
 		var _m = p.Match(SLParserCOLON)
 
-		localctx.(*MapInitializerListContext).s21 = _m
+		localctx.(*MapInitializerListContext).s41 = _m
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	localctx.(*MapInitializerListContext).cols = append(localctx.(*MapInitializerListContext).cols, localctx.(*MapInitializerListContext).s21)
+	localctx.(*MapInitializerListContext).cols = append(localctx.(*MapInitializerListContext).cols, localctx.(*MapInitializerListContext).s41)
 	{
 		p.SetState(222)
 
@@ -5057,13 +5079,13 @@ func (p *SLParser) MapInitializerList() (localctx IMapInitializerListContext) {
 
 				var _m = p.Match(SLParserCOLON)
 
-				localctx.(*MapInitializerListContext).s21 = _m
+				localctx.(*MapInitializerListContext).s41 = _m
 				if p.HasError() {
 					// Recognition error - abort rule
 					goto errorExit
 				}
 			}
-			localctx.(*MapInitializerListContext).cols = append(localctx.(*MapInitializerListContext).cols, localctx.(*MapInitializerListContext).s21)
+			localctx.(*MapInitializerListContext).cols = append(localctx.(*MapInitializerListContext).cols, localctx.(*MapInitializerListContext).s41)
 			{
 				p.SetState(226)
 
@@ -5650,8 +5672,8 @@ func (s *NullContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *NullContext) NUL() antlr.TerminalNode {
-	return s.GetToken(SLParserNUL, 0)
+func (s *NullContext) NULL() antlr.TerminalNode {
+	return s.GetToken(SLParserNULL, 0)
 }
 
 func (s *NullContext) EnterRule(listener antlr.ParseTreeListener) {
@@ -5699,8 +5721,8 @@ func (s *BoolFalseContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *BoolFalseContext) SL_FALSE() antlr.TerminalNode {
-	return s.GetToken(SLParserSL_FALSE, 0)
+func (s *BoolFalseContext) FALSE() antlr.TerminalNode {
+	return s.GetToken(SLParserFALSE, 0)
 }
 
 func (s *BoolFalseContext) EnterRule(listener antlr.ParseTreeListener) {
@@ -5855,8 +5877,8 @@ func (s *BoolTrueContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *BoolTrueContext) SL_TRUE() antlr.TerminalNode {
-	return s.GetToken(SLParserSL_TRUE, 0)
+func (s *BoolTrueContext) TRUE() antlr.TerminalNode {
+	return s.GetToken(SLParserTRUE, 0)
 }
 
 func (s *BoolTrueContext) EnterRule(listener antlr.ParseTreeListener) {
@@ -6074,7 +6096,7 @@ func (p *SLParser) Literal() (localctx ILiteralContext) {
 		{
 			p.SetState(253)
 
-			var _m = p.Match(SLParserSL_TRUE)
+			var _m = p.Match(SLParserTRUE)
 
 			localctx.(*BoolTrueContext).tok = _m
 			if p.HasError() {
@@ -6089,7 +6111,7 @@ func (p *SLParser) Literal() (localctx ILiteralContext) {
 		{
 			p.SetState(254)
 
-			var _m = p.Match(SLParserSL_FALSE)
+			var _m = p.Match(SLParserFALSE)
 
 			localctx.(*BoolFalseContext).tok = _m
 			if p.HasError() {
@@ -6104,7 +6126,7 @@ func (p *SLParser) Literal() (localctx ILiteralContext) {
 		{
 			p.SetState(255)
 
-			var _m = p.Match(SLParserNUL)
+			var _m = p.Match(SLParserNULL)
 
 			localctx.(*NullContext).tok = _m
 			if p.HasError() {
