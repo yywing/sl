@@ -77,6 +77,7 @@ optExpr: (opt = '?')? e = expr;
 
 literal:
 	sign = MINUS? tok = NUM_INT		# Int
+	| tok = NUM_UINT				# Uint
 	| sign = MINUS? tok = NUM_FLOAT	# Double
 	| tok = STRING					# String
 	| tok = BYTES					# Bytes
@@ -185,6 +186,8 @@ NUM_FLOAT: (
 	);
 
 NUM_INT: ( DIGIT+ | '0x' HEXDIGIT+);
+
+NUM_UINT: DIGIT+ ( 'u' | 'U') | '0x' HEXDIGIT+ ( 'u' | 'U');
 
 STRING:
 	'"' (ESC_SEQ | ~('\\' | '"' | '\n' | '\r'))* '"'

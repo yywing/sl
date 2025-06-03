@@ -124,6 +124,10 @@ func (v *BaseSLVisitor) VisitInt(ctx *IntContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseSLVisitor) VisitUint(ctx *UintContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseSLVisitor) VisitDouble(ctx *DoubleContext) interface{} {
 	return v.VisitChildren(ctx)
 }

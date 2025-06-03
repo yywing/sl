@@ -95,6 +95,9 @@ type SLVisitor interface {
 	// Visit a parse tree produced by SLParser#Int.
 	VisitInt(ctx *IntContext) interface{}
 
+	// Visit a parse tree produced by SLParser#Uint.
+	VisitUint(ctx *UintContext) interface{}
+
 	// Visit a parse tree produced by SLParser#Double.
 	VisitDouble(ctx *DoubleContext) interface{}
 

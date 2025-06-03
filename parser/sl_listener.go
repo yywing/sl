@@ -95,6 +95,9 @@ type SLListener interface {
 	// EnterInt is called when entering the Int production.
 	EnterInt(c *IntContext)
 
+	// EnterUint is called when entering the Uint production.
+	EnterUint(c *UintContext)
+
 	// EnterDouble is called when entering the Double production.
 	EnterDouble(c *DoubleContext)
 
@@ -199,6 +202,9 @@ type SLListener interface {
 
 	// ExitInt is called when exiting the Int production.
 	ExitInt(c *IntContext)
+
+	// ExitUint is called when exiting the Uint production.
+	ExitUint(c *UintContext)
 
 	// ExitDouble is called when exiting the Double production.
 	ExitDouble(c *DoubleContext)
