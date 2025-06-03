@@ -1,0 +1,21 @@
+name: "time"
+description: "Tests for time"
+section {
+  name: "time"
+  description: "Test time."
+  test {
+    name: "toType_timestamp"
+    expr: "type(timestamp('2009-02-13T23:31:30Z'))"
+    value: { type_value: "timestamp" }
+  }
+  test {
+    name: "toType_duration"
+    expr: "type(duration('1000000s'))"
+    value: { type_value: "duration" }
+  }
+  test {
+    name: "toType_duration"
+    expr: "type(duration('1000000s'))"
+    value: { type_value: "duration" }
+  }
+}
