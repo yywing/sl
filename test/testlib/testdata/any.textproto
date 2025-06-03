@@ -1,0 +1,25 @@
+name: "any"
+description: "Tests for any"
+section {
+  name: "any"
+  description: "Test any."
+  test {
+    name: "any"
+    expr: "{'a': 1, 'b': 'b'}['a'] == 1"
+    value: { bool_value: true }
+  }
+  test {
+    name: "any_false"
+    expr: "{'a': 1, 'b': 'b'}['b'] + 1"
+    eval_error: {
+      errors: { message: "type not match" }
+    }
+  }
+  test {
+    name: "any_false"
+    expr: "{'a': 1, 'b': 'b'}['a'].contains('a')"
+    eval_error: {
+      errors: { message: "type not match" }
+    }
+  }
+}
