@@ -1,4 +1,4 @@
-// Code generated from /root/self/sl/SL.g4 by ANTLR 4.13.1. DO NOT EDIT.
+// Code generated from sl/SL.g4 by ANTLR 4.13.1. DO NOT EDIT.
 
 package parser // SL
 
@@ -47,8 +47,8 @@ func slParserInit() {
 		"GREATER_EQUALS", "GREATER", "LOGICAL_AND", "LOGICAL_OR", "LBRACKET",
 		"RPRACKET", "LBRACE", "RBRACE", "LPAREN", "RPAREN", "DOT", "COMMA",
 		"MINUS", "EXCLAM", "QUESTIONMARK", "COLON", "PLUS", "STAR", "SLASH",
-		"PERCENT", "WHITESPACE", "COMMENT", "NUM_FLOAT", "NUM_INT", "NUM_UINT",
-		"STRING", "BYTES", "IDENTIFIER", "ESC_IDENTIFIER",
+		"PERCENT", "WHITESPACE", "COMMENT", "NUM_FLOAT", "NUM_INT", "STRING",
+		"BYTES", "IDENTIFIER", "ESC_IDENTIFIER",
 	}
 	staticData.RuleNames = []string{
 		"start", "expr", "conditionalOr", "conditionalAnd", "relation", "calc",
@@ -57,7 +57,7 @@ func slParserInit() {
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 54, 259, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 53, 258, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7,
 		10, 2, 11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 2, 14, 7, 14, 2, 15, 7, 15,
 		2, 16, 7, 16, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3,
@@ -81,42 +81,42 @@ func slParserInit() {
 		12, 11, 214, 9, 11, 1, 12, 3, 12, 217, 8, 12, 1, 12, 1, 12, 1, 13, 1, 13,
 		1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 5, 13, 229, 8, 13, 10, 13, 12,
 		13, 232, 9, 13, 1, 14, 1, 14, 3, 14, 236, 8, 14, 1, 15, 3, 15, 239, 8,
-		15, 1, 15, 1, 15, 1, 16, 3, 16, 244, 8, 16, 1, 16, 1, 16, 1, 16, 3, 16,
-		249, 8, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 3, 16, 257, 8, 16,
-		1, 16, 0, 3, 8, 10, 14, 17, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22,
-		24, 26, 28, 30, 32, 0, 3, 2, 0, 13, 13, 22, 27, 1, 0, 43, 45, 2, 0, 38,
-		38, 42, 42, 290, 0, 34, 1, 0, 0, 0, 2, 37, 1, 0, 0, 0, 4, 45, 1, 0, 0,
-		0, 6, 53, 1, 0, 0, 0, 8, 61, 1, 0, 0, 0, 10, 72, 1, 0, 0, 0, 12, 99, 1,
-		0, 0, 0, 14, 101, 1, 0, 0, 0, 16, 184, 1, 0, 0, 0, 18, 186, 1, 0, 0, 0,
-		20, 194, 1, 0, 0, 0, 22, 202, 1, 0, 0, 0, 24, 216, 1, 0, 0, 0, 26, 220,
-		1, 0, 0, 0, 28, 235, 1, 0, 0, 0, 30, 238, 1, 0, 0, 0, 32, 256, 1, 0, 0,
-		0, 34, 35, 3, 2, 1, 0, 35, 36, 5, 0, 0, 1, 36, 1, 1, 0, 0, 0, 37, 43, 3,
-		4, 2, 0, 38, 39, 5, 40, 0, 0, 39, 40, 3, 4, 2, 0, 40, 41, 5, 41, 0, 0,
-		41, 42, 3, 2, 1, 0, 42, 44, 1, 0, 0, 0, 43, 38, 1, 0, 0, 0, 43, 44, 1,
-		0, 0, 0, 44, 3, 1, 0, 0, 0, 45, 50, 3, 6, 3, 0, 46, 47, 5, 29, 0, 0, 47,
-		49, 3, 6, 3, 0, 48, 46, 1, 0, 0, 0, 49, 52, 1, 0, 0, 0, 50, 48, 1, 0, 0,
-		0, 50, 51, 1, 0, 0, 0, 51, 5, 1, 0, 0, 0, 52, 50, 1, 0, 0, 0, 53, 58, 3,
-		8, 4, 0, 54, 55, 5, 28, 0, 0, 55, 57, 3, 8, 4, 0, 56, 54, 1, 0, 0, 0, 57,
-		60, 1, 0, 0, 0, 58, 56, 1, 0, 0, 0, 58, 59, 1, 0, 0, 0, 59, 7, 1, 0, 0,
-		0, 60, 58, 1, 0, 0, 0, 61, 62, 6, 4, -1, 0, 62, 63, 3, 10, 5, 0, 63, 69,
-		1, 0, 0, 0, 64, 65, 10, 1, 0, 0, 65, 66, 7, 0, 0, 0, 66, 68, 3, 8, 4, 2,
-		67, 64, 1, 0, 0, 0, 68, 71, 1, 0, 0, 0, 69, 67, 1, 0, 0, 0, 69, 70, 1,
-		0, 0, 0, 70, 9, 1, 0, 0, 0, 71, 69, 1, 0, 0, 0, 72, 73, 6, 5, -1, 0, 73,
-		74, 3, 12, 6, 0, 74, 83, 1, 0, 0, 0, 75, 76, 10, 2, 0, 0, 76, 77, 7, 1,
-		0, 0, 77, 82, 3, 10, 5, 3, 78, 79, 10, 1, 0, 0, 79, 80, 7, 2, 0, 0, 80,
-		82, 3, 10, 5, 2, 81, 75, 1, 0, 0, 0, 81, 78, 1, 0, 0, 0, 82, 85, 1, 0,
-		0, 0, 83, 81, 1, 0, 0, 0, 83, 84, 1, 0, 0, 0, 84, 11, 1, 0, 0, 0, 85, 83,
-		1, 0, 0, 0, 86, 100, 3, 14, 7, 0, 87, 89, 5, 39, 0, 0, 88, 87, 1, 0, 0,
-		0, 89, 90, 1, 0, 0, 0, 90, 88, 1, 0, 0, 0, 90, 91, 1, 0, 0, 0, 91, 92,
-		1, 0, 0, 0, 92, 100, 3, 14, 7, 0, 93, 95, 5, 38, 0, 0, 94, 93, 1, 0, 0,
-		0, 95, 96, 1, 0, 0, 0, 96, 94, 1, 0, 0, 0, 96, 97, 1, 0, 0, 0, 97, 98,
-		1, 0, 0, 0, 98, 100, 3, 14, 7, 0, 99, 86, 1, 0, 0, 0, 99, 88, 1, 0, 0,
-		0, 99, 94, 1, 0, 0, 0, 100, 13, 1, 0, 0, 0, 101, 102, 6, 7, -1, 0, 102,
-		103, 3, 16, 8, 0, 103, 128, 1, 0, 0, 0, 104, 105, 10, 3, 0, 0, 105, 107,
-		5, 36, 0, 0, 106, 108, 5, 40, 0, 0, 107, 106, 1, 0, 0, 0, 107, 108, 1,
-		0, 0, 0, 108, 109, 1, 0, 0, 0, 109, 127, 3, 28, 14, 0, 110, 111, 10, 2,
-		0, 0, 111, 112, 5, 36, 0, 0, 112, 113, 5, 53, 0, 0, 113, 115, 5, 34, 0,
-		0, 114, 116, 3, 18, 9, 0, 115, 114, 1, 0, 0, 0, 115, 116, 1, 0, 0, 0, 116,
+		15, 1, 15, 1, 15, 1, 16, 3, 16, 244, 8, 16, 1, 16, 1, 16, 3, 16, 248, 8,
+		16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 3, 16, 256, 8, 16, 1, 16,
+		0, 3, 8, 10, 14, 17, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26,
+		28, 30, 32, 0, 3, 2, 0, 13, 13, 22, 27, 1, 0, 43, 45, 2, 0, 38, 38, 42,
+		42, 288, 0, 34, 1, 0, 0, 0, 2, 37, 1, 0, 0, 0, 4, 45, 1, 0, 0, 0, 6, 53,
+		1, 0, 0, 0, 8, 61, 1, 0, 0, 0, 10, 72, 1, 0, 0, 0, 12, 99, 1, 0, 0, 0,
+		14, 101, 1, 0, 0, 0, 16, 184, 1, 0, 0, 0, 18, 186, 1, 0, 0, 0, 20, 194,
+		1, 0, 0, 0, 22, 202, 1, 0, 0, 0, 24, 216, 1, 0, 0, 0, 26, 220, 1, 0, 0,
+		0, 28, 235, 1, 0, 0, 0, 30, 238, 1, 0, 0, 0, 32, 255, 1, 0, 0, 0, 34, 35,
+		3, 2, 1, 0, 35, 36, 5, 0, 0, 1, 36, 1, 1, 0, 0, 0, 37, 43, 3, 4, 2, 0,
+		38, 39, 5, 40, 0, 0, 39, 40, 3, 4, 2, 0, 40, 41, 5, 41, 0, 0, 41, 42, 3,
+		2, 1, 0, 42, 44, 1, 0, 0, 0, 43, 38, 1, 0, 0, 0, 43, 44, 1, 0, 0, 0, 44,
+		3, 1, 0, 0, 0, 45, 50, 3, 6, 3, 0, 46, 47, 5, 29, 0, 0, 47, 49, 3, 6, 3,
+		0, 48, 46, 1, 0, 0, 0, 49, 52, 1, 0, 0, 0, 50, 48, 1, 0, 0, 0, 50, 51,
+		1, 0, 0, 0, 51, 5, 1, 0, 0, 0, 52, 50, 1, 0, 0, 0, 53, 58, 3, 8, 4, 0,
+		54, 55, 5, 28, 0, 0, 55, 57, 3, 8, 4, 0, 56, 54, 1, 0, 0, 0, 57, 60, 1,
+		0, 0, 0, 58, 56, 1, 0, 0, 0, 58, 59, 1, 0, 0, 0, 59, 7, 1, 0, 0, 0, 60,
+		58, 1, 0, 0, 0, 61, 62, 6, 4, -1, 0, 62, 63, 3, 10, 5, 0, 63, 69, 1, 0,
+		0, 0, 64, 65, 10, 1, 0, 0, 65, 66, 7, 0, 0, 0, 66, 68, 3, 8, 4, 2, 67,
+		64, 1, 0, 0, 0, 68, 71, 1, 0, 0, 0, 69, 67, 1, 0, 0, 0, 69, 70, 1, 0, 0,
+		0, 70, 9, 1, 0, 0, 0, 71, 69, 1, 0, 0, 0, 72, 73, 6, 5, -1, 0, 73, 74,
+		3, 12, 6, 0, 74, 83, 1, 0, 0, 0, 75, 76, 10, 2, 0, 0, 76, 77, 7, 1, 0,
+		0, 77, 82, 3, 10, 5, 3, 78, 79, 10, 1, 0, 0, 79, 80, 7, 2, 0, 0, 80, 82,
+		3, 10, 5, 2, 81, 75, 1, 0, 0, 0, 81, 78, 1, 0, 0, 0, 82, 85, 1, 0, 0, 0,
+		83, 81, 1, 0, 0, 0, 83, 84, 1, 0, 0, 0, 84, 11, 1, 0, 0, 0, 85, 83, 1,
+		0, 0, 0, 86, 100, 3, 14, 7, 0, 87, 89, 5, 39, 0, 0, 88, 87, 1, 0, 0, 0,
+		89, 90, 1, 0, 0, 0, 90, 88, 1, 0, 0, 0, 90, 91, 1, 0, 0, 0, 91, 92, 1,
+		0, 0, 0, 92, 100, 3, 14, 7, 0, 93, 95, 5, 38, 0, 0, 94, 93, 1, 0, 0, 0,
+		95, 96, 1, 0, 0, 0, 96, 94, 1, 0, 0, 0, 96, 97, 1, 0, 0, 0, 97, 98, 1,
+		0, 0, 0, 98, 100, 3, 14, 7, 0, 99, 86, 1, 0, 0, 0, 99, 88, 1, 0, 0, 0,
+		99, 94, 1, 0, 0, 0, 100, 13, 1, 0, 0, 0, 101, 102, 6, 7, -1, 0, 102, 103,
+		3, 16, 8, 0, 103, 128, 1, 0, 0, 0, 104, 105, 10, 3, 0, 0, 105, 107, 5,
+		36, 0, 0, 106, 108, 5, 40, 0, 0, 107, 106, 1, 0, 0, 0, 107, 108, 1, 0,
+		0, 0, 108, 109, 1, 0, 0, 0, 109, 127, 3, 28, 14, 0, 110, 111, 10, 2, 0,
+		0, 111, 112, 5, 36, 0, 0, 112, 113, 5, 52, 0, 0, 113, 115, 5, 34, 0, 0,
+		114, 116, 3, 18, 9, 0, 115, 114, 1, 0, 0, 0, 115, 116, 1, 0, 0, 0, 116,
 		117, 1, 0, 0, 0, 117, 127, 5, 35, 0, 0, 118, 119, 10, 1, 0, 0, 119, 121,
 		5, 30, 0, 0, 120, 122, 5, 40, 0, 0, 121, 120, 1, 0, 0, 0, 121, 122, 1,
 		0, 0, 0, 122, 123, 1, 0, 0, 0, 123, 124, 3, 2, 1, 0, 124, 125, 5, 31, 0,
@@ -124,8 +124,8 @@ func slParserInit() {
 		118, 1, 0, 0, 0, 127, 130, 1, 0, 0, 0, 128, 126, 1, 0, 0, 0, 128, 129,
 		1, 0, 0, 0, 129, 15, 1, 0, 0, 0, 130, 128, 1, 0, 0, 0, 131, 133, 5, 36,
 		0, 0, 132, 131, 1, 0, 0, 0, 132, 133, 1, 0, 0, 0, 133, 134, 1, 0, 0, 0,
-		134, 185, 5, 53, 0, 0, 135, 137, 5, 36, 0, 0, 136, 135, 1, 0, 0, 0, 136,
-		137, 1, 0, 0, 0, 137, 138, 1, 0, 0, 0, 138, 139, 5, 53, 0, 0, 139, 141,
+		134, 185, 5, 52, 0, 0, 135, 137, 5, 36, 0, 0, 136, 135, 1, 0, 0, 0, 136,
+		137, 1, 0, 0, 0, 137, 138, 1, 0, 0, 0, 138, 139, 5, 52, 0, 0, 139, 141,
 		5, 34, 0, 0, 140, 142, 3, 18, 9, 0, 141, 140, 1, 0, 0, 0, 141, 142, 1,
 		0, 0, 0, 142, 143, 1, 0, 0, 0, 143, 185, 5, 35, 0, 0, 144, 145, 5, 34,
 		0, 0, 145, 146, 3, 2, 1, 0, 146, 147, 5, 35, 0, 0, 147, 185, 1, 0, 0, 0,
@@ -136,8 +136,8 @@ func slParserInit() {
 		0, 158, 159, 1, 0, 0, 0, 159, 161, 1, 0, 0, 0, 160, 162, 5, 37, 0, 0, 161,
 		160, 1, 0, 0, 0, 161, 162, 1, 0, 0, 0, 162, 163, 1, 0, 0, 0, 163, 185,
 		5, 33, 0, 0, 164, 166, 5, 36, 0, 0, 165, 164, 1, 0, 0, 0, 165, 166, 1,
-		0, 0, 0, 166, 167, 1, 0, 0, 0, 167, 172, 5, 53, 0, 0, 168, 169, 5, 36,
-		0, 0, 169, 171, 5, 53, 0, 0, 170, 168, 1, 0, 0, 0, 171, 174, 1, 0, 0, 0,
+		0, 0, 0, 166, 167, 1, 0, 0, 0, 167, 172, 5, 52, 0, 0, 168, 169, 5, 36,
+		0, 0, 169, 171, 5, 52, 0, 0, 170, 168, 1, 0, 0, 0, 171, 174, 1, 0, 0, 0,
 		172, 170, 1, 0, 0, 0, 172, 173, 1, 0, 0, 0, 173, 175, 1, 0, 0, 0, 174,
 		172, 1, 0, 0, 0, 175, 177, 5, 32, 0, 0, 176, 178, 3, 22, 11, 0, 177, 176,
 		1, 0, 0, 0, 177, 178, 1, 0, 0, 0, 178, 180, 1, 0, 0, 0, 179, 181, 5, 37,
@@ -161,20 +161,19 @@ func slParserInit() {
 		0, 224, 225, 3, 30, 15, 0, 225, 226, 5, 41, 0, 0, 226, 227, 3, 2, 1, 0,
 		227, 229, 1, 0, 0, 0, 228, 223, 1, 0, 0, 0, 229, 232, 1, 0, 0, 0, 230,
 		228, 1, 0, 0, 0, 230, 231, 1, 0, 0, 0, 231, 27, 1, 0, 0, 0, 232, 230, 1,
-		0, 0, 0, 233, 236, 5, 53, 0, 0, 234, 236, 5, 54, 0, 0, 235, 233, 1, 0,
+		0, 0, 0, 233, 236, 5, 52, 0, 0, 234, 236, 5, 53, 0, 0, 235, 233, 1, 0,
 		0, 0, 235, 234, 1, 0, 0, 0, 236, 29, 1, 0, 0, 0, 237, 239, 5, 40, 0, 0,
 		238, 237, 1, 0, 0, 0, 238, 239, 1, 0, 0, 0, 239, 240, 1, 0, 0, 0, 240,
 		241, 3, 2, 1, 0, 241, 31, 1, 0, 0, 0, 242, 244, 5, 38, 0, 0, 243, 242,
-		1, 0, 0, 0, 243, 244, 1, 0, 0, 0, 244, 245, 1, 0, 0, 0, 245, 257, 5, 49,
-		0, 0, 246, 257, 5, 50, 0, 0, 247, 249, 5, 38, 0, 0, 248, 247, 1, 0, 0,
-		0, 248, 249, 1, 0, 0, 0, 249, 250, 1, 0, 0, 0, 250, 257, 5, 48, 0, 0, 251,
-		257, 5, 51, 0, 0, 252, 257, 5, 52, 0, 0, 253, 257, 5, 3, 0, 0, 254, 257,
-		5, 1, 0, 0, 255, 257, 5, 2, 0, 0, 256, 243, 1, 0, 0, 0, 256, 246, 1, 0,
-		0, 0, 256, 248, 1, 0, 0, 0, 256, 251, 1, 0, 0, 0, 256, 252, 1, 0, 0, 0,
-		256, 253, 1, 0, 0, 0, 256, 254, 1, 0, 0, 0, 256, 255, 1, 0, 0, 0, 257,
-		33, 1, 0, 0, 0, 36, 43, 50, 58, 69, 81, 83, 90, 96, 99, 107, 115, 121,
-		126, 128, 132, 136, 141, 150, 153, 158, 161, 165, 172, 177, 180, 184, 191,
-		199, 212, 216, 230, 235, 238, 243, 248, 256,
+		1, 0, 0, 0, 243, 244, 1, 0, 0, 0, 244, 245, 1, 0, 0, 0, 245, 256, 5, 49,
+		0, 0, 246, 248, 5, 38, 0, 0, 247, 246, 1, 0, 0, 0, 247, 248, 1, 0, 0, 0,
+		248, 249, 1, 0, 0, 0, 249, 256, 5, 48, 0, 0, 250, 256, 5, 50, 0, 0, 251,
+		256, 5, 51, 0, 0, 252, 256, 5, 3, 0, 0, 253, 256, 5, 1, 0, 0, 254, 256,
+		5, 2, 0, 0, 255, 243, 1, 0, 0, 0, 255, 247, 1, 0, 0, 0, 255, 250, 1, 0,
+		0, 0, 255, 251, 1, 0, 0, 0, 255, 252, 1, 0, 0, 0, 255, 253, 1, 0, 0, 0,
+		255, 254, 1, 0, 0, 0, 256, 33, 1, 0, 0, 0, 36, 43, 50, 58, 69, 81, 83,
+		90, 96, 99, 107, 115, 121, 126, 128, 132, 136, 141, 150, 153, 158, 161,
+		165, 172, 177, 180, 184, 191, 199, 212, 216, 230, 235, 238, 243, 247, 255,
 	}
 	deserializer := antlr.NewATNDeserializer(nil)
 	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
@@ -262,11 +261,10 @@ const (
 	SLParserCOMMENT        = 47
 	SLParserNUM_FLOAT      = 48
 	SLParserNUM_INT        = 49
-	SLParserNUM_UINT       = 50
-	SLParserSTRING         = 51
-	SLParserBYTES          = 52
-	SLParserIDENTIFIER     = 53
-	SLParserESC_IDENTIFIER = 54
+	SLParserSTRING         = 50
+	SLParserBYTES          = 51
+	SLParserIDENTIFIER     = 52
+	SLParserESC_IDENTIFIER = 53
 )
 
 // SLParser rules.
@@ -2703,7 +2701,7 @@ func (p *SLParser) member(_p int) (localctx IMemberContext) {
 				}
 				_la = p.GetTokenStream().LA(1)
 
-				if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&17733839434547214) != 0 {
+				if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&8726640179806222) != 0 {
 					{
 						p.SetState(114)
 
@@ -3514,7 +3512,7 @@ func (p *SLParser) Primary() (localctx IPrimaryContext) {
 		}
 		_la = p.GetTokenStream().LA(1)
 
-		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&17733839434547214) != 0 {
+		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&8726640179806222) != 0 {
 			{
 				p.SetState(140)
 
@@ -3581,7 +3579,7 @@ func (p *SLParser) Primary() (localctx IPrimaryContext) {
 		}
 		_la = p.GetTokenStream().LA(1)
 
-		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&17734938946174990) != 0 {
+		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&8727739691433998) != 0 {
 			{
 				p.SetState(149)
 
@@ -3639,7 +3637,7 @@ func (p *SLParser) Primary() (localctx IPrimaryContext) {
 		}
 		_la = p.GetTokenStream().LA(1)
 
-		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&17734938946174990) != 0 {
+		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&8727739691433998) != 0 {
 			{
 				p.SetState(157)
 
@@ -3770,7 +3768,7 @@ func (p *SLParser) Primary() (localctx IPrimaryContext) {
 		}
 		_la = p.GetTokenStream().LA(1)
 
-		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&27022697275850752) != 0 {
+		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&13511898393739264) != 0 {
 			{
 				p.SetState(176)
 
@@ -5600,55 +5598,6 @@ func (s *BytesContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 	}
 }
 
-type UintContext struct {
-	LiteralContext
-	tok antlr.Token
-}
-
-func NewUintContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *UintContext {
-	var p = new(UintContext)
-
-	InitEmptyLiteralContext(&p.LiteralContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*LiteralContext))
-
-	return p
-}
-
-func (s *UintContext) GetTok() antlr.Token { return s.tok }
-
-func (s *UintContext) SetTok(v antlr.Token) { s.tok = v }
-
-func (s *UintContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *UintContext) NUM_UINT() antlr.TerminalNode {
-	return s.GetToken(SLParserNUM_UINT, 0)
-}
-
-func (s *UintContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(SLListener); ok {
-		listenerT.EnterUint(s)
-	}
-}
-
-func (s *UintContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(SLListener); ok {
-		listenerT.ExitUint(s)
-	}
-}
-
-func (s *UintContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case SLVisitor:
-		return t.VisitUint(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
 type NullContext struct {
 	LiteralContext
 	tok antlr.Token
@@ -5966,7 +5915,7 @@ func (p *SLParser) Literal() (localctx ILiteralContext) {
 	p.EnterRule(localctx, 32, SLParserRULE_literal)
 	var _la int
 
-	p.SetState(256)
+	p.SetState(255)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -6010,24 +5959,9 @@ func (p *SLParser) Literal() (localctx ILiteralContext) {
 		}
 
 	case 2:
-		localctx = NewUintContext(p, localctx)
-		p.EnterOuterAlt(localctx, 2)
-		{
-			p.SetState(246)
-
-			var _m = p.Match(SLParserNUM_UINT)
-
-			localctx.(*UintContext).tok = _m
-			if p.HasError() {
-				// Recognition error - abort rule
-				goto errorExit
-			}
-		}
-
-	case 3:
 		localctx = NewDoubleContext(p, localctx)
-		p.EnterOuterAlt(localctx, 3)
-		p.SetState(248)
+		p.EnterOuterAlt(localctx, 2)
+		p.SetState(247)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -6036,7 +5970,7 @@ func (p *SLParser) Literal() (localctx ILiteralContext) {
 
 		if _la == SLParserMINUS {
 			{
-				p.SetState(247)
+				p.SetState(246)
 
 				var _m = p.Match(SLParserMINUS)
 
@@ -6049,7 +5983,7 @@ func (p *SLParser) Literal() (localctx ILiteralContext) {
 
 		}
 		{
-			p.SetState(250)
+			p.SetState(249)
 
 			var _m = p.Match(SLParserNUM_FLOAT)
 
@@ -6060,11 +5994,11 @@ func (p *SLParser) Literal() (localctx ILiteralContext) {
 			}
 		}
 
-	case 4:
+	case 3:
 		localctx = NewStringContext(p, localctx)
-		p.EnterOuterAlt(localctx, 4)
+		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(251)
+			p.SetState(250)
 
 			var _m = p.Match(SLParserSTRING)
 
@@ -6075,11 +6009,11 @@ func (p *SLParser) Literal() (localctx ILiteralContext) {
 			}
 		}
 
-	case 5:
+	case 4:
 		localctx = NewBytesContext(p, localctx)
-		p.EnterOuterAlt(localctx, 5)
+		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(252)
+			p.SetState(251)
 
 			var _m = p.Match(SLParserBYTES)
 
@@ -6090,11 +6024,11 @@ func (p *SLParser) Literal() (localctx ILiteralContext) {
 			}
 		}
 
-	case 6:
+	case 5:
 		localctx = NewBoolTrueContext(p, localctx)
-		p.EnterOuterAlt(localctx, 6)
+		p.EnterOuterAlt(localctx, 5)
 		{
-			p.SetState(253)
+			p.SetState(252)
 
 			var _m = p.Match(SLParserTRUE)
 
@@ -6105,11 +6039,11 @@ func (p *SLParser) Literal() (localctx ILiteralContext) {
 			}
 		}
 
-	case 7:
+	case 6:
 		localctx = NewBoolFalseContext(p, localctx)
-		p.EnterOuterAlt(localctx, 7)
+		p.EnterOuterAlt(localctx, 6)
 		{
-			p.SetState(254)
+			p.SetState(253)
 
 			var _m = p.Match(SLParserFALSE)
 
@@ -6120,11 +6054,11 @@ func (p *SLParser) Literal() (localctx ILiteralContext) {
 			}
 		}
 
-	case 8:
+	case 7:
 		localctx = NewNullContext(p, localctx)
-		p.EnterOuterAlt(localctx, 8)
+		p.EnterOuterAlt(localctx, 7)
 		{
-			p.SetState(255)
+			p.SetState(254)
 
 			var _m = p.Match(SLParserNULL)
 

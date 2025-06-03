@@ -1,4 +1,4 @@
-module github.com/yywing/sl/go
+module github.com/yywing/go
 
 go 1.22.9
 

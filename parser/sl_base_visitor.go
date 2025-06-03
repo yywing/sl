@@ -1,4 +1,4 @@
-// Code generated from /root/self/sl/SL.g4 by ANTLR 4.13.1. DO NOT EDIT.
+// Code generated from sl/SL.g4 by ANTLR 4.13.1. DO NOT EDIT.
 
 package parser // SL
 
@@ -121,10 +121,6 @@ func (v *BaseSLVisitor) VisitOptExpr(ctx *OptExprContext) interface{} {
 }
 
 func (v *BaseSLVisitor) VisitInt(ctx *IntContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseSLVisitor) VisitUint(ctx *UintContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 

@@ -1,4 +1,4 @@
-// Code generated from /root/self/sl/SL.g4 by ANTLR 4.13.1. DO NOT EDIT.
+// Code generated from sl/SL.g4 by ANTLR 4.13.1. DO NOT EDIT.
 
 package parser // SL
 
@@ -94,9 +94,6 @@ type SLListener interface {
 
 	// EnterInt is called when entering the Int production.
 	EnterInt(c *IntContext)
-
-	// EnterUint is called when entering the Uint production.
-	EnterUint(c *UintContext)
 
 	// EnterDouble is called when entering the Double production.
 	EnterDouble(c *DoubleContext)
@@ -202,9 +199,6 @@ type SLListener interface {
 
 	// ExitInt is called when exiting the Int production.
 	ExitInt(c *IntContext)
-
-	// ExitUint is called when exiting the Uint production.
-	ExitUint(c *UintContext)
 
 	// ExitDouble is called when exiting the Double production.
 	ExitDouble(c *DoubleContext)

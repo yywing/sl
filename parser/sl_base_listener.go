@@ -1,4 +1,4 @@
-// Code generated from /root/self/sl/SL.g4 by ANTLR 4.13.1. DO NOT EDIT.
+// Code generated from sl/SL.g4 by ANTLR 4.13.1. DO NOT EDIT.
 
 package parser // SL
 
@@ -194,12 +194,6 @@ func (s *BaseSLListener) EnterInt(ctx *IntContext) {}
 
 // ExitInt is called when production Int is exited.
 func (s *BaseSLListener) ExitInt(ctx *IntContext) {}
-
-// EnterUint is called when production Uint is entered.
-func (s *BaseSLListener) EnterUint(ctx *UintContext) {}
-
-// ExitUint is called when production Uint is exited.
-func (s *BaseSLListener) ExitUint(ctx *UintContext) {}
 
 // EnterDouble is called when production Double is entered.
 func (s *BaseSLListener) EnterDouble(ctx *DoubleContext) {}
