@@ -8,6 +8,6 @@ Subset of CEL (Common Expression Language)
 ./scripts/gen_doc.sh
 ```
 
-## function
+### function
 
 [fucntion doc](./docs/functions.md)

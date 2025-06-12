@@ -2,7 +2,7 @@ package sl
 
 import (
 	"github.com/yywing/sl/ast"
-	"github.com/yywing/sl/lib"
+	"github.com/yywing/sl/lib/functions"
 )
 
 // Env 表示执行环境，包含变量和函数
@@ -75,7 +75,7 @@ func NewBuiltinEnv() *Env {
 func NewStdEnv() *Env {
 	env := NewBuiltinEnv()
 
-	for name, fn := range lib.LibFunctions {
+	for name, fn := range functions.LibFunctions {
 		env.SetFunction(name, fn)
 	}
 

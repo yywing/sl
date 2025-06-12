@@ -1,4 +1,4 @@
-package lib
+package functions
 
 import "github.com/yywing/sl/ast"
 
