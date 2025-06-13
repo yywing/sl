@@ -213,7 +213,7 @@ func (runner *Runner) VisitConditional(node *ast.ConditionalNode) (interface{}, 
 
 func (runner *Runner) VisitList(node *ast.ListNode) (interface{}, error) {
 	values := make([]ast.Value, len(node.Elements))
-	var elementType ast.ValueType = ast.StringType
+	var elementType ast.ValueType = ast.AnyType
 
 	for i, elem := range node.Elements {
 		value, err := runner.Eval(elem)
@@ -221,8 +221,13 @@ func (runner *Runner) VisitList(node *ast.ListNode) (interface{}, error) {
 			return nil, err
 		}
 		values[i] = value
+
 		if i == 0 {
 			elementType = value.Type()
+		}
+
+		if !value.Type().Equals(elementType) {
+			elementType = ast.AnyType
 		}
 	}
 
@@ -260,6 +265,13 @@ func (runner *Runner) VisitMap(node *ast.MapNode) (interface{}, error) {
 		if i == 0 {
 			keyType = key.Type()
 			valueType = value.Type()
+		}
+
+		if !key.Type().Equals(keyType) {
+			keyType = ast.AnyType
+		}
+		if !value.Type().Equals(valueType) {
+			valueType = ast.AnyType
 		}
 	}
 

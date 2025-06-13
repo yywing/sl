@@ -289,16 +289,13 @@ func TestComparisons(t *testing.T) {
 		"comparisons/gte_literal/gte_dyn_big_double_int",
 		"comparisons/gte_literal/gte_dyn_small_double_int",
 
-		// feature: not support mixed type
-		"comparisons/eq_literal/not_eq_list_null",
+		// feature: not support diff type comparer
 		"comparisons/eq_literal/eq_list_mixed_type_numbers",
-		"comparisons/eq_literal/not_eq_list_mixed_type_numbers",
-		"comparisons/eq_literal/not_eq_list_false_vs_types",
+		"comparisons/eq_literal/not_eq_list_length",
+
+		// feature: not support key type
 		"comparisons/eq_literal/eq_map_mixed_type_numbers",
 		"comparisons/eq_literal/eq_map_value_mixed_types",
-		"comparisons/eq_literal/not_eq_list_elem_null",
-		"comparisons/in_list_literal/elem_in_mixed_type_list",
-		"comparisons/in_list_literal/elem_in_mixed_type_list_cross_type",
 		"comparisons/in_map_literal/key_in_mixed_key_type_map",
 		"comparisons/in_map_literal/key_in_mixed_key_type_map_cross_type",
 

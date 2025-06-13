@@ -129,7 +129,7 @@ var (
 		if len(args) != 2 {
 			return nil, fmt.Errorf("equals expects 2 arguments, got %d", len(args))
 		}
-		if args[0].Type() != args[1].Type() {
+		if !args[0].Type().Equals(args[1].Type()) {
 			return nil, fmt.Errorf("equals expects arguments of the same type, got %s and %s", args[0].Type(), args[1].Type())
 		}
 
@@ -141,7 +141,7 @@ var (
 		if len(args) != 2 {
 			return nil, fmt.Errorf("not equals expects 2 arguments, got %d", len(args))
 		}
-		if args[0].Type() != args[1].Type() {
+		if !args[0].Type().Equals(args[1].Type()) {
 			return nil, fmt.Errorf("not equals expects arguments of the same type, got %s and %s", args[0].Type(), args[1].Type())
 		}
 
@@ -160,7 +160,7 @@ var (
 			return nil, fmt.Errorf("add expects 2 arguments, got %d", len(args))
 		}
 
-		if args[0].Type() != args[1].Type() {
+		if !args[0].Type().Equals(args[1].Type()) {
 			return nil, fmt.Errorf("add expects arguments of the same type, got %s and %s", args[0].Type(), args[1].Type())
 		}
 
@@ -201,7 +201,7 @@ var (
 			return nil, fmt.Errorf("subtract expects 2 arguments, got %d", len(args))
 		}
 
-		if args[0].Type() != args[1].Type() {
+		if !args[0].Type().Equals(args[1].Type()) {
 			return nil, fmt.Errorf("subtract expects arguments of the same type, got %s and %s", args[0].Type(), args[1].Type())
 		}
 
@@ -234,7 +234,7 @@ var (
 			return nil, fmt.Errorf("multiply expects 2 arguments, got %d", len(args))
 		}
 
-		if args[0].Type() != args[1].Type() {
+		if !args[0].Type().Equals(args[1].Type()) {
 			return nil, fmt.Errorf("multiply expects arguments of the same type, got %s and %s", args[0].Type(), args[1].Type())
 		}
 
@@ -275,7 +275,7 @@ var (
 			return nil, fmt.Errorf("divide expects 2 arguments, got %d", len(args))
 		}
 
-		if args[0].Type() != args[1].Type() {
+		if !args[0].Type().Equals(args[1].Type()) {
 			return nil, fmt.Errorf("divide expects arguments of the same type, got %s and %s", args[0].Type(), args[1].Type())
 		}
 
@@ -308,7 +308,7 @@ var (
 			return nil, fmt.Errorf("modulo expects 2 arguments, got %d", len(args))
 		}
 
-		if args[0].Type() != args[1].Type() {
+		if !args[0].Type().Equals(args[1].Type()) {
 			return nil, fmt.Errorf("modulo expects arguments of the same type, got %s and %s", args[0].Type(), args[1].Type())
 		}
 

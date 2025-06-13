@@ -306,17 +306,14 @@ func (tc *Checker) VisitList(node *ast.ListNode) (interface{}, error) {
 	}
 
 	// 检查所有元素类型是否一致
-	for i, elem := range node.Elements[1:] {
+	for _, elem := range node.Elements[1:] {
 		elemType, err := tc.Check(elem)
 		if err != nil {
 			return nil, err
 		}
 
 		if !tc.isCompatible(elemType, firstElemType) {
-			return nil, &CheckError{
-				Message: fmt.Sprintf("list element %d has type %s, expected %s", i+1, elemType.String(), firstElemType.String()),
-				Node:    node,
-			}
+			firstElemType = ast.AnyType
 		}
 	}
 
