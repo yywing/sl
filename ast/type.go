@@ -55,6 +55,10 @@ type PrimitiveType struct {
 	equals    func(other ValueType) bool
 }
 
+func NewPrimitiveType(kind string, traitMask int) *PrimitiveType {
+	return &PrimitiveType{kind: kind, traitMask: traitMask}
+}
+
 func (t *PrimitiveType) Kind() string {
 	return t.kind
 }

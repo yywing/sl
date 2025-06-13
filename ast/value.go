@@ -197,24 +197,3 @@ func NewListValue(values []Value, elementType ValueType) *ListValue {
 func NewMapValue(values map[Value]Value, keyType, valueType ValueType) *MapValue {
 	return &MapValue{MapValue: values, keyType: keyType, valueType: valueType}
 }
-
-// FunctionValue 表示函数值
-type FunctionValue struct {
-	fn Function
-}
-
-func (v *FunctionValue) Type() ValueType { return NewFunctionType(v.fn.Name(), nil, nil) }
-func (v *FunctionValue) Equal(other Value) bool {
-	if o, ok := other.(*FunctionValue); ok {
-		return v.fn.Name() == o.fn.Name()
-	}
-	return false
-}
-func (v *FunctionValue) String() string { return fmt.Sprintf("function<%s>", v.fn.Name()) }
-func (v *FunctionValue) Function() Function {
-	return v.fn
-}
-
-func NewFunctionValue(fn Function) *FunctionValue {
-	return &FunctionValue{fn: fn}
-}
