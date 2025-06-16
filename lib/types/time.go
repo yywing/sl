@@ -9,6 +9,11 @@ import (
 const (
 	TypeKindTimestamp = "timestamp"
 	TypeKindDuration  = "duration"
+
+	// Number of seconds between `0001-01-01T00:00:00Z` and the Unix epoch.
+	MinUnixTime int64 = -62135596800
+	// Number of seconds between `9999-12-31T23:59:59.999999999Z` and the Unix epoch.
+	MaxUnixTime int64 = 253402300799
 )
 
 var (
@@ -19,6 +24,13 @@ var (
 type TimestampValue struct {
 	UnixNano int64
 	TZ       string
+}
+
+func NewTimestampValue(unixNano int64, tz string) *TimestampValue {
+	return &TimestampValue{
+		UnixNano: unixNano,
+		TZ:       tz,
+	}
 }
 
 func (v *TimestampValue) Type() ast.ValueType {
@@ -39,6 +51,12 @@ func (v *TimestampValue) Equal(other ast.Value) bool {
 
 type DurationValue struct {
 	Nanosecond int64
+}
+
+func NewDurationValue(nanosecond int64) *DurationValue {
+	return &DurationValue{
+		Nanosecond: nanosecond,
+	}
 }
 
 func (v *DurationValue) Type() ast.ValueType {

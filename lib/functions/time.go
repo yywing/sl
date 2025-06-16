@@ -2,6 +2,7 @@ package functions
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 	"time"
@@ -12,6 +13,15 @@ import (
 )
 
 func init() {
+	ast.AddFunction.Combine(AddFunction)
+	ast.SubtractFunction.Combine(SubtractFunction)
+	ast.LessFunction.Combine(LessFunction)
+	ast.LessEqualsFunction.Combine(LessEqualsFunction)
+	ast.GreaterFunction.Combine(GreaterFunction)
+	ast.GreaterEqualsFunction.Combine(GreaterEqualsFunction)
+	ast.IntFunction.Combine(IntFunction)
+	ast.StringFunction.Combine(StringFunction)
+
 	LibFunctions["getFullYear"] = native.MustNewNativeFunction("getFullYear", GetFullYear).WithDefaultArg("")
 	LibFunctions["getMonth"] = native.MustNewNativeFunction("getMonth", GetMonth).WithDefaultArg("")
 	LibFunctions["getDayOfYear"] = native.MustNewNativeFunction("getDayOfYear", GetDayOfYear).WithDefaultArg("")
@@ -22,157 +32,380 @@ func init() {
 	LibFunctions["getMinutes"] = GetMinutesFunction
 	LibFunctions["getSeconds"] = GetSecondsFunction
 	LibFunctions["getMilliseconds"] = GetMillisecondsFunction
+	LibFunctions["duration"] = DurationFunction
+	LibFunctions["timestamp"] = TimestampFunction
 }
 
+const (
+	FunctionGetHours        = "getHours"
+	FunctionGetMinutes      = "getMinutes"
+	FunctionGetSeconds      = "getSeconds"
+	FunctionGetMilliseconds = "getMilliseconds"
+	FunctionDuration        = "duration"
+	FunctionTimestamp       = "timestamp"
+)
+
 var (
-	GetHoursFunction = ast.NewBaseFunction("getHours", []ast.FunctionType{
-		*ast.NewFunctionType("getHours", []ast.ValueType{types.TimestampType}, ast.IntType),
-		*ast.NewFunctionType("getHours", []ast.ValueType{types.DurationType}, ast.IntType),
-		*ast.NewFunctionType("getHours", []ast.ValueType{types.TimestampType, ast.StringType}, ast.IntType),
-	}, func(args []ast.Value) (ast.Value, error) {
-		switch len(args) {
-		case 1:
-			switch args[0].Type().Kind() {
-			case types.TypeKindTimestamp:
-				result, err := TimestampGetHours(args[0].(*types.TimestampValue), "")
-				if err != nil {
-					return nil, err
-				}
-				return ast.NewIntValue(result), nil
-			case types.TypeKindDuration:
-				return ast.NewIntValue(DurationGetHours(args[0].(*types.DurationValue))), nil
-			default:
-				return nil, fmt.Errorf("getHours expects timestamp or duration argument, got %s", args[0].Type())
-			}
-		case 2:
-			t, ok := args[0].(*types.TimestampValue)
-			if !ok {
-				return nil, fmt.Errorf("getHours expects timestamp argument, got %s", args[0].Type())
-			}
-			tz, ok := args[1].(*ast.StringValue)
-			if !ok {
-				return nil, fmt.Errorf("getHours expects string argument, got %s", args[1].Type())
-			}
-			result, err := TimestampGetHours(t, tz.StringValue)
-			if err != nil {
-				return nil, err
-			}
-			return ast.NewIntValue(result), nil
-		default:
-			return nil, fmt.Errorf("getHours expects 1 or 2 arguments, got %d", len(args))
-		}
-	})
-	GetMinutesFunction = ast.NewBaseFunction("getMinutes", []ast.FunctionType{
-		*ast.NewFunctionType("getMinutes", []ast.ValueType{types.TimestampType}, ast.IntType),
-		*ast.NewFunctionType("getMinutes", []ast.ValueType{types.DurationType}, ast.IntType),
-		*ast.NewFunctionType("getMinutes", []ast.ValueType{types.TimestampType, ast.StringType}, ast.IntType),
-	}, func(args []ast.Value) (ast.Value, error) {
-		switch len(args) {
-		case 1:
-			switch args[0].Type().Kind() {
-			case types.TypeKindTimestamp:
-				result, err := TimestampGetMinutes(args[0].(*types.TimestampValue), "")
-				if err != nil {
-					return nil, err
-				}
-				return ast.NewIntValue(result), nil
-			case types.TypeKindDuration:
-				return ast.NewIntValue(DurationGetMinutes(args[0].(*types.DurationValue))), nil
-			default:
-				return nil, fmt.Errorf("getMinutes expects timestamp or duration argument, got %s", args[0].Type())
-			}
-		case 2:
-			t, ok := args[0].(*types.TimestampValue)
-			if !ok {
-				return nil, fmt.Errorf("getMinutes expects timestamp argument, got %s", args[0].Type())
-			}
-			tz, ok := args[1].(*ast.StringValue)
-			if !ok {
-				return nil, fmt.Errorf("getMinutes expects string argument, got %s", args[1].Type())
-			}
-			result, err := TimestampGetMinutes(t, tz.StringValue)
-			if err != nil {
-				return nil, err
-			}
-			return ast.NewIntValue(result), nil
-		default:
-			return nil, fmt.Errorf("getMinutes expects 1 or 2 arguments, got %d", len(args))
-		}
-	})
-	GetSecondsFunction = ast.NewBaseFunction("getSeconds", []ast.FunctionType{
-		*ast.NewFunctionType("getSeconds", []ast.ValueType{types.TimestampType}, ast.IntType),
-		*ast.NewFunctionType("getSeconds", []ast.ValueType{types.DurationType}, ast.IntType),
-		*ast.NewFunctionType("getSeconds", []ast.ValueType{types.TimestampType, ast.StringType}, ast.IntType),
-	}, func(args []ast.Value) (ast.Value, error) {
-		switch len(args) {
-		case 1:
-			switch args[0].Type().Kind() {
-			case types.TypeKindTimestamp:
-				result, err := TimestampGetSeconds(args[0].(*types.TimestampValue), "")
-				if err != nil {
-					return nil, err
-				}
-				return ast.NewIntValue(result), nil
-			case types.TypeKindDuration:
-				return ast.NewIntValue(DurationGetSeconds(args[0].(*types.DurationValue))), nil
-			default:
-				return nil, fmt.Errorf("getSeconds expects timestamp or duration argument, got %s", args[0].Type())
-			}
-		case 2:
-			t, ok := args[0].(*types.TimestampValue)
-			if !ok {
-				return nil, fmt.Errorf("getSeconds expects timestamp argument, got %s", args[0].Type())
-			}
-			tz, ok := args[1].(*ast.StringValue)
-			if !ok {
-				return nil, fmt.Errorf("getSeconds expects string argument, got %s", args[1].Type())
-			}
-			result, err := TimestampGetSeconds(t, tz.StringValue)
-			if err != nil {
-				return nil, err
-			}
-			return ast.NewIntValue(result), nil
-		default:
-			return nil, fmt.Errorf("getSeconds expects 1 or 2 arguments, got %d", len(args))
-		}
-	})
-	GetMillisecondsFunction = ast.NewBaseFunction("getMilliseconds", []ast.FunctionType{
-		*ast.NewFunctionType("getMilliseconds", []ast.ValueType{types.TimestampType}, ast.IntType),
-		*ast.NewFunctionType("getMilliseconds", []ast.ValueType{types.DurationType}, ast.IntType),
-		*ast.NewFunctionType("getMilliseconds", []ast.ValueType{types.TimestampType, ast.StringType}, ast.IntType),
-	}, func(args []ast.Value) (ast.Value, error) {
-		switch len(args) {
-		case 1:
-			switch args[0].Type().Kind() {
-			case types.TypeKindTimestamp:
-				result, err := TimestampGetMilliseconds(args[0].(*types.TimestampValue), "")
-				if err != nil {
-					return nil, err
-				}
-				return ast.NewIntValue(result), nil
-			case types.TypeKindDuration:
-				return ast.NewIntValue(DurationGetMilliseconds(args[0].(*types.DurationValue))), nil
-			default:
-				return nil, fmt.Errorf("getMilliseconds expects timestamp or duration argument, got %s", args[0].Type())
-			}
-		case 2:
-			t, ok := args[0].(*types.TimestampValue)
-			if !ok {
-				return nil, fmt.Errorf("getMilliseconds expects timestamp argument, got %s", args[0].Type())
-			}
-			tz, ok := args[1].(*ast.StringValue)
-			if !ok {
-				return nil, fmt.Errorf("getMilliseconds expects string argument, got %s", args[1].Type())
-			}
-			result, err := TimestampGetMilliseconds(t, tz.StringValue)
-			if err != nil {
-				return nil, err
-			}
-			return ast.NewIntValue(result), nil
-		default:
-			return nil, fmt.Errorf("getMilliseconds expects 1 or 2 arguments, got %d", len(args))
-		}
-	})
+	AddFunction = ast.NewBaseFunction(
+		ast.Add,
+		[]ast.Definition{
+			{
+				Type: *ast.NewFunctionType(ast.Add, []ast.ValueType{types.DurationType, types.DurationType}, types.DurationType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					x := args[0].(*types.DurationValue).Nanosecond
+					y := args[1].(*types.DurationValue).Nanosecond
+					if (y > 0 && x > math.MaxInt64-y) || (y < 0 && x < math.MinInt64-y) {
+						return nil, fmt.Errorf("int overflow")
+					}
+					return types.NewDurationValue(x + y), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(ast.Add, []ast.ValueType{types.DurationType, types.TimestampType}, types.TimestampType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					// TODO: check overflow
+					return types.NewTimestampValue(args[0].(*types.DurationValue).Nanosecond+args[1].(*types.TimestampValue).UnixNano, args[1].(*types.TimestampValue).TZ), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(ast.Add, []ast.ValueType{types.TimestampType, types.DurationType}, types.TimestampType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					// TODO: check overflow
+					return types.NewTimestampValue(args[0].(*types.TimestampValue).UnixNano+args[1].(*types.DurationValue).Nanosecond, args[0].(*types.TimestampValue).TZ), nil
+				},
+			},
+		},
+	)
+	SubtractFunction = ast.NewBaseFunction(
+		ast.Subtract,
+		[]ast.Definition{
+			{
+				Type: *ast.NewFunctionType(ast.Subtract, []ast.ValueType{types.DurationType, types.DurationType}, types.DurationType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					x := args[0].(*types.DurationValue).Nanosecond
+					y := args[1].(*types.DurationValue).Nanosecond
+					if (y > 0 && x > math.MaxInt64-y) || (y < 0 && x < math.MinInt64-y) {
+						return nil, fmt.Errorf("int overflow")
+					}
+					return types.NewDurationValue(x - y), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(ast.Add, []ast.ValueType{types.TimestampType, types.DurationType}, types.TimestampType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					// TODO: check overflow
+					return types.NewTimestampValue(args[0].(*types.TimestampValue).UnixNano-args[1].(*types.DurationValue).Nanosecond, args[0].(*types.TimestampValue).TZ), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(ast.Subtract, []ast.ValueType{types.TimestampType, types.TimestampType}, types.DurationType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					// TODO: check overflow
+					return types.NewDurationValue(args[0].(*types.TimestampValue).UnixNano - args[1].(*types.TimestampValue).UnixNano), nil
+				},
+			},
+		},
+	)
+	LessFunction = ast.NewBaseFunction(
+		ast.Less,
+		[]ast.Definition{
+			{
+				Type: *ast.NewFunctionType(ast.Less, []ast.ValueType{types.DurationType, types.DurationType}, ast.BoolType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					return ast.NewBoolValue(args[0].(*types.DurationValue).Nanosecond < args[1].(*types.DurationValue).Nanosecond), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(ast.Subtract, []ast.ValueType{types.TimestampType, types.TimestampType}, ast.BoolType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					return ast.NewBoolValue(args[0].(*types.TimestampValue).UnixNano < args[1].(*types.TimestampValue).UnixNano), nil
+				},
+			},
+		},
+	)
+	LessEqualsFunction = ast.NewBaseFunction(
+		ast.LessEquals,
+		[]ast.Definition{
+			{
+				Type: *ast.NewFunctionType(ast.LessEquals, []ast.ValueType{types.DurationType, types.DurationType}, ast.BoolType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					return ast.NewBoolValue(args[0].(*types.DurationValue).Nanosecond <= args[1].(*types.DurationValue).Nanosecond), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(ast.LessEquals, []ast.ValueType{types.TimestampType, types.TimestampType}, ast.BoolType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					return ast.NewBoolValue(args[0].(*types.TimestampValue).UnixNano <= args[1].(*types.TimestampValue).UnixNano), nil
+				},
+			},
+		},
+	)
+	GreaterFunction = ast.NewBaseFunction(
+		ast.Greater,
+		[]ast.Definition{
+			{
+				Type: *ast.NewFunctionType(ast.Greater, []ast.ValueType{types.DurationType, types.DurationType}, ast.BoolType),
+			},
+			{
+				Type: *ast.NewFunctionType(ast.Greater, []ast.ValueType{types.TimestampType, types.TimestampType}, ast.BoolType),
+			},
+		},
+	)
+	GreaterEqualsFunction = ast.NewBaseFunction(
+		ast.GreaterEquals,
+		[]ast.Definition{
+			{
+				Type: *ast.NewFunctionType(ast.GreaterEquals, []ast.ValueType{types.DurationType, types.DurationType}, ast.BoolType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					return ast.NewBoolValue(args[0].(*types.DurationValue).Nanosecond >= args[1].(*types.DurationValue).Nanosecond), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(ast.GreaterEquals, []ast.ValueType{types.TimestampType, types.TimestampType}, ast.BoolType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					return ast.NewBoolValue(args[0].(*types.TimestampValue).UnixNano >= args[1].(*types.TimestampValue).UnixNano), nil
+				},
+			},
+		},
+	)
+
+	DurationFunction = ast.NewBaseFunction(
+		FunctionDuration,
+		[]ast.Definition{
+			{
+				Type: *ast.NewFunctionType(FunctionDuration, []ast.ValueType{types.DurationType}, types.DurationType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					return args[0], nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(FunctionDuration, []ast.ValueType{ast.IntType}, types.DurationType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					return types.NewDurationValue(args[0].(*ast.IntValue).IntValue), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(FunctionDuration, []ast.ValueType{ast.StringType}, types.DurationType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					d, err := time.ParseDuration(args[0].(*ast.StringValue).StringValue)
+					if err != nil {
+						return nil, err
+					}
+					return types.NewDurationValue(int64(d.Nanoseconds())), nil
+				},
+			},
+		},
+	)
+
+	TimestampFunction = ast.NewBaseFunction(
+		FunctionTimestamp,
+		[]ast.Definition{
+			{
+				Type: *ast.NewFunctionType(FunctionTimestamp, []ast.ValueType{types.TimestampType}, types.TimestampType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					return args[0], nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(FunctionTimestamp, []ast.ValueType{ast.IntType}, types.TimestampType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					i := args[0].(*ast.IntValue).IntValue
+					// The maximum positive value that can be passed to time.Unix is math.MaxInt64 minus the number
+					// of seconds between year 1 and year 1970. See comments on unixToInternal.
+					if int64(i) < types.MinUnixTime || int64(i) > types.MaxUnixTime {
+						return nil, fmt.Errorf("timestamp overflow")
+					}
+					return types.NewTimestampValue(time.Unix(int64(i), 0).UnixNano(), "UTC"), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(FunctionTimestamp, []ast.ValueType{ast.StringType}, types.TimestampType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					t, err := time.Parse(time.RFC3339, args[0].(*ast.StringValue).StringValue)
+					if err != nil {
+						return nil, err
+					}
+					if t.Unix() < types.MinUnixTime || t.Unix() > types.MaxUnixTime {
+						return nil, fmt.Errorf("timestamp overflow")
+					}
+					// TODO: 测试一下 +8 时区
+					return types.NewTimestampValue(t.UnixNano(), t.Location().String()), nil
+				},
+			},
+		},
+	)
+
+	IntFunction = ast.NewBaseFunction(
+		ast.Int,
+		[]ast.Definition{
+			{
+				Type: *ast.NewFunctionType(ast.Int, []ast.ValueType{types.DurationType}, ast.IntType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					return ast.NewIntValue(args[0].(*types.DurationValue).Nanosecond), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(ast.Int, []ast.ValueType{types.TimestampType}, ast.IntType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					t, err := loadTimestamp(args[0].(*types.TimestampValue), "")
+					if err != nil {
+						return nil, err
+					}
+					return ast.NewIntValue(t.Unix()), nil
+				},
+			},
+		},
+	)
+
+	StringFunction = ast.NewBaseFunction(
+		ast.String,
+		[]ast.Definition{
+			{
+				Type: *ast.NewFunctionType(ast.Int, []ast.ValueType{types.DurationType}, ast.StringType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					return ast.NewStringValue(strconv.FormatFloat(time.Duration(args[0].(*types.DurationValue).Nanosecond).Seconds(), 'f', -1, 64) + "s"), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(ast.Int, []ast.ValueType{types.TimestampType}, ast.StringType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					t, err := loadTimestamp(args[0].(*types.TimestampValue), "")
+					if err != nil {
+						return nil, err
+					}
+					return ast.NewStringValue(t.Format(time.RFC3339Nano)), nil
+				},
+			},
+		},
+	)
+
+	GetHoursFunction = ast.NewBaseFunction(
+		FunctionGetHours,
+		[]ast.Definition{
+			{
+				Type: *ast.NewFunctionType(FunctionGetHours, []ast.ValueType{types.DurationType}, ast.IntType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					return ast.NewIntValue(DurationGetHours(args[0].(*types.DurationValue))), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(FunctionGetHours, []ast.ValueType{types.TimestampType}, ast.IntType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					result, err := TimestampGetHours(args[0].(*types.TimestampValue), "")
+					if err != nil {
+						return nil, err
+					}
+					return ast.NewIntValue(result), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(FunctionGetHours, []ast.ValueType{types.TimestampType, ast.StringType}, ast.IntType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					result, err := TimestampGetHours(args[0].(*types.TimestampValue), args[1].(*ast.StringValue).StringValue)
+					if err != nil {
+						return nil, err
+					}
+					return ast.NewIntValue(result), nil
+				},
+			},
+		},
+	)
+
+	GetMinutesFunction = ast.NewBaseFunction(
+		FunctionGetMinutes,
+		[]ast.Definition{
+			{
+				Type: *ast.NewFunctionType(FunctionGetMinutes, []ast.ValueType{types.DurationType}, ast.IntType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					return ast.NewIntValue(DurationGetMinutes(args[0].(*types.DurationValue))), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(FunctionGetMinutes, []ast.ValueType{types.TimestampType}, ast.IntType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					result, err := TimestampGetMinutes(args[0].(*types.TimestampValue), "")
+					if err != nil {
+						return nil, err
+					}
+					return ast.NewIntValue(result), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(FunctionGetMinutes, []ast.ValueType{types.TimestampType, ast.StringType}, ast.IntType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					result, err := TimestampGetMinutes(args[0].(*types.TimestampValue), args[1].(*ast.StringValue).StringValue)
+					if err != nil {
+						return nil, err
+					}
+					return ast.NewIntValue(result), nil
+				},
+			},
+		},
+	)
+
+	GetSecondsFunction = ast.NewBaseFunction(
+		FunctionGetSeconds,
+		[]ast.Definition{
+			{
+				Type: *ast.NewFunctionType(FunctionGetSeconds, []ast.ValueType{types.DurationType}, ast.IntType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					return ast.NewIntValue(DurationGetSeconds(args[0].(*types.DurationValue))), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(FunctionGetSeconds, []ast.ValueType{types.TimestampType}, ast.IntType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					result, err := TimestampGetSeconds(args[0].(*types.TimestampValue), "")
+					if err != nil {
+						return nil, err
+					}
+					return ast.NewIntValue(result), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(FunctionGetSeconds, []ast.ValueType{types.TimestampType, ast.StringType}, ast.IntType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					result, err := TimestampGetSeconds(args[0].(*types.TimestampValue), args[1].(*ast.StringValue).StringValue)
+					if err != nil {
+						return nil, err
+					}
+					return ast.NewIntValue(result), nil
+				},
+			},
+		},
+	)
+
+	GetMillisecondsFunction = ast.NewBaseFunction(
+		FunctionGetMilliseconds,
+		[]ast.Definition{
+			{
+				Type: *ast.NewFunctionType(FunctionGetMilliseconds, []ast.ValueType{types.DurationType}, ast.IntType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					return ast.NewIntValue(DurationGetMilliseconds(args[0].(*types.DurationValue))), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(FunctionGetMilliseconds, []ast.ValueType{types.TimestampType}, ast.IntType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					result, err := TimestampGetMilliseconds(args[0].(*types.TimestampValue), "")
+					if err != nil {
+						return nil, err
+					}
+					return ast.NewIntValue(result), nil
+				},
+			},
+			{
+				Type: *ast.NewFunctionType(FunctionGetMilliseconds, []ast.ValueType{types.TimestampType, ast.StringType}, ast.IntType),
+				Call: func(args []ast.Value) (ast.Value, error) {
+					result, err := TimestampGetMilliseconds(args[0].(*types.TimestampValue), args[1].(*ast.StringValue).StringValue)
+					if err != nil {
+						return nil, err
+					}
+					return ast.NewIntValue(result), nil
+				},
+			},
+		},
+	)
 )
 
 func timeZone(val string) (*time.Location, error) {

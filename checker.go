@@ -77,68 +77,6 @@ func (tc *Checker) VisitMemberAccess(node *ast.MemberAccessNode) (interface{}, e
 	return memberType, nil
 }
 
-func (tc *Checker) resolveDynamicType(env map[string]ast.ValueType, dyn ast.ValueType, rt ast.ValueType) (ast.ValueType, error) {
-	if !dyn.IsDyn() {
-		return dyn, nil
-	}
-
-	switch dyn := dyn.(type) {
-	case *ast.ListType:
-		var innerType ast.ValueType
-		if rt != nil {
-			e, ok := rt.(*ast.ListType)
-			if !ok {
-				return nil, fmt.Errorf("cannot resolve dynamic type %s to %s", dyn.String(), rt.String())
-			}
-			innerType = e.ElementType()
-		}
-		result, err := tc.resolveDynamicType(env, dyn.ElementType(), innerType)
-		if err != nil {
-			return nil, err
-		}
-		return ast.NewListType(result), nil
-	case *ast.MapType:
-		var keyType ast.ValueType
-		var valueType ast.ValueType
-		if rt != nil {
-			m, ok := rt.(*ast.MapType)
-			if !ok {
-				return nil, fmt.Errorf("cannot resolve dynamic type %s to %s", dyn.String(), rt.String())
-			}
-			keyType = m.KeyType()
-			valueType = m.ValueType()
-		}
-		key, err := tc.resolveDynamicType(env, dyn.KeyType(), keyType)
-		if err != nil {
-			return nil, err
-		}
-		value, err := tc.resolveDynamicType(env, dyn.ValueType(), valueType)
-		if err != nil {
-			return nil, err
-		}
-		return ast.NewMapType(key, value), nil
-	default:
-		t, ok := env[dyn.Kind()]
-		if rt == nil {
-			if !ok {
-				return nil, fmt.Errorf("dynamic type %s not found", dyn.String())
-			}
-			return t, nil
-		}
-
-		if ok {
-			if !t.Equals(rt) {
-				return nil, fmt.Errorf("dynamic type should %s but got %s", t.String(), rt.String())
-			}
-			env[dyn.Kind()] = tc.getDeterministicType(t, rt)
-		} else {
-			env[dyn.Kind()] = rt
-		}
-
-		return env[dyn.Kind()], nil
-	}
-}
-
 func (tc *Checker) VisitFunctionCall(node *ast.FunctionCallNode) (interface{}, error) {
 	var fnName string
 	var args []ast.ASTNode
@@ -174,32 +112,17 @@ func (tc *Checker) VisitFunctionCall(node *ast.FunctionCallNode) (interface{}, e
 		argTypes[i] = argType
 	}
 
-	var err error
 	// 检查参数类型
 	fnTypes := f.Types()
 	resultEnv := make(map[string]ast.ValueType)
 	var foundFnType *ast.FunctionType
-Outer:
 	for _, fnType := range fnTypes {
-		if len(fnType.ParamTypes()) != len(args) {
+		var ok bool
+		resultEnv, ok = ast.MatchFunctionTypes(fnType.ParamTypes(), argTypes)
+		if !ok {
 			continue
 		}
-
-		env := make(map[string]ast.ValueType)
-		for i, argType := range argTypes {
-			paramType := fnType.ParamTypes()[i]
-			if paramType.IsDyn() {
-				paramType, err = tc.resolveDynamicType(env, paramType, argType)
-				if err != nil {
-					continue Outer
-				}
-			}
-			if !tc.isCompatible(argType, paramType) {
-				continue Outer
-			}
-		}
 		foundFnType = &fnType
-		resultEnv = env
 		break
 	}
 
@@ -213,7 +136,7 @@ Outer:
 	resultType := foundFnType.ReturnType()
 	if resultType.IsDyn() {
 		var err error
-		resultType, err = tc.resolveDynamicType(resultEnv, resultType, nil)
+		resultType, err = ast.ResolveDynamicType(resultEnv, resultType, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -367,15 +290,6 @@ func (tc *Checker) VisitMap(node *ast.MapNode) (interface{}, error) {
 
 func (tc *Checker) isCompatible(t1, t2 ast.ValueType) bool {
 	return t1.Equals(t2)
-}
-
-func (tc *Checker) getDeterministicType(ts ...ast.ValueType) ast.ValueType {
-	for _, t := range ts {
-		if t.Kind() != ast.TypeKindAny {
-			return t
-		}
-	}
-	return ast.AnyType
 }
 
 func (tc *Checker) VisitStruct(node *ast.StructNode) (interface{}, error) {
