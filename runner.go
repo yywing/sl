@@ -18,16 +18,22 @@ func (e *RuntimeError) Error() string {
 
 // Runner 实现表达式求值
 type Runner struct {
-	env *Env
+	env       *Env
+	program   *Program
+	variables Variables
 }
 
 // NewRunner 创建新的求值器
-func NewRunner(env *Env) *Runner {
-	return &Runner{env: env}
+func NewRunner(env *Env, program *Program, variables Variables) *Runner {
+	return &Runner{env: env, program: program, variables: variables}
 }
 
 // Eval 求值表达式
-func (runner *Runner) Eval(node ast.ASTNode) (ast.Value, error) {
+func (runner *Runner) Eval() (ast.Value, error) {
+	return runner.eval(runner.program.ASTNode)
+}
+
+func (runner *Runner) eval(node ast.ASTNode) (ast.Value, error) {
 	result, err := node.Accept(runner)
 	if err != nil {
 		return nil, err
@@ -43,7 +49,7 @@ func (runner *Runner) VisitLiteral(node *ast.LiteralNode) (interface{}, error) {
 }
 
 func (runner *Runner) VisitIdent(node *ast.IdentNode) (interface{}, error) {
-	if value, exists := runner.env.GetVariable(node.Name); exists {
+	if value, exists := runner.variables[node.Name]; exists {
 		return value, nil
 	}
 
@@ -54,7 +60,7 @@ func (runner *Runner) VisitIdent(node *ast.IdentNode) (interface{}, error) {
 }
 
 func (runner *Runner) VisitMemberAccess(node *ast.MemberAccessNode) (interface{}, error) {
-	object, err := runner.Eval(node.Object)
+	object, err := runner.eval(node.Object)
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +117,7 @@ func (runner *Runner) VisitFunctionCall(node *ast.FunctionCallNode) (interface{}
 	// 求值参数
 	argValues := make([]ast.Value, len(args))
 	for i, arg := range args {
-		argValue, err := runner.Eval(arg)
+		argValue, err := runner.eval(arg)
 		if err != nil {
 			// 特殊处理一下 or
 			if fn.Name() == ast.LogicalOr {
@@ -133,12 +139,12 @@ func (runner *Runner) VisitFunctionCall(node *ast.FunctionCallNode) (interface{}
 }
 
 func (runner *Runner) VisitIndex(node *ast.IndexNode) (interface{}, error) {
-	object, err := runner.Eval(node.Object)
+	object, err := runner.eval(node.Object)
 	if err != nil {
 		return nil, err
 	}
 
-	index, err := runner.Eval(node.Index)
+	index, err := runner.eval(node.Index)
 	if err != nil {
 		return nil, err
 	}
@@ -191,7 +197,7 @@ func (runner *Runner) VisitIndex(node *ast.IndexNode) (interface{}, error) {
 }
 
 func (runner *Runner) VisitConditional(node *ast.ConditionalNode) (interface{}, error) {
-	condition, err := runner.Eval(node.Condition)
+	condition, err := runner.eval(node.Condition)
 	if err != nil {
 		return nil, err
 	}
@@ -205,9 +211,9 @@ func (runner *Runner) VisitConditional(node *ast.ConditionalNode) (interface{}, 
 	}
 
 	if result.BoolValue {
-		return runner.Eval(node.TrueExpr)
+		return runner.eval(node.TrueExpr)
 	} else {
-		return runner.Eval(node.FalseExpr)
+		return runner.eval(node.FalseExpr)
 	}
 }
 
@@ -216,7 +222,7 @@ func (runner *Runner) VisitList(node *ast.ListNode) (interface{}, error) {
 	var elementType ast.ValueType = ast.AnyType
 
 	for i, elem := range node.Elements {
-		value, err := runner.Eval(elem)
+		value, err := runner.eval(elem)
 		if err != nil {
 			return nil, err
 		}
@@ -240,12 +246,12 @@ func (runner *Runner) VisitMap(node *ast.MapNode) (interface{}, error) {
 	keys := []ast.Value{}
 
 	for i, entry := range node.Entries {
-		key, err := runner.Eval(entry.Key)
+		key, err := runner.eval(entry.Key)
 		if err != nil {
 			return nil, err
 		}
 
-		value, err := runner.Eval(entry.Value)
+		value, err := runner.eval(entry.Value)
 		if err != nil {
 			return nil, err
 		}
@@ -285,7 +291,7 @@ func (runner *Runner) VisitStruct(node *ast.StructNode) (interface{}, error) {
 
 	// // 求值所有字段
 	// for _, field := range node.Fields {
-	// 	value, err := runner.Eval(field.Value)
+	// 	value, err := runner.eval(field.Value)
 	// 	if err != nil {
 	// 		return nil, err
 	// 	}

@@ -164,8 +164,8 @@ func ValueToExprValue(res ast.Value) (*expr.Value, error) {
 	}
 }
 
-func GetTestVariables(t *testpb.SimpleTest) (map[string]ast.Value, error) {
-	vars := make(map[string]ast.Value)
+func GetTestVariables(t *testpb.SimpleTest) (sl.Variables, error) {
+	vars := make(sl.Variables)
 	for k, v := range t.GetBindings() {
 		value, err := ExprValueToValue(v)
 		if err != nil {
@@ -187,28 +187,21 @@ func GetTestVariables(t *testpb.SimpleTest) (map[string]ast.Value, error) {
 	return vars, nil
 }
 
-func NewEnvFromTestCase(testCase *testpb.SimpleTest) (*sl.Env, error) {
-	env := sl.NewStdEnv()
-	vars, err := GetTestVariables(testCase)
-	if err != nil {
-		return nil, err
-	}
-	for k, v := range vars {
-		env.SetVariable(k, v)
-	}
-	return env, nil
-}
-
 func RunTestCase(testCase *testpb.SimpleTest) error {
+	env := sl.NewStdEnv()
+
 	ast, err := sl.Parse(testCase.GetExpr())
 	if err != nil {
 		return err
 	}
 
-	env, err := NewEnvFromTestCase(testCase)
+	vars, err := GetTestVariables(testCase)
 	if err != nil {
 		return err
 	}
+
+	varTypes := vars.Type()
+	program := sl.NewProgram(ast, varTypes)
 
 	// 填写默认值
 	if testCase.GetResultMatcher() == nil {
@@ -223,8 +216,7 @@ func RunTestCase(testCase *testpb.SimpleTest) error {
 
 	// check
 	if !testCase.GetDisableCheck() {
-		checker := sl.NewChecker(env)
-		typ, err := checker.Check(ast)
+		typ, err := env.Check(program)
 		switch m := testCase.GetResultMatcher().(type) {
 		case *testpb.SimpleTest_EvalError:
 			if err != nil {
@@ -244,8 +236,7 @@ func RunTestCase(testCase *testpb.SimpleTest) error {
 
 	// eval
 	if !testCase.GetCheckOnly() {
-		runner := sl.NewRunner(env)
-		result, err := runner.Eval(ast)
+		result, err := env.Run(program, vars)
 		switch m := testCase.GetResultMatcher().(type) {
 		case *testpb.SimpleTest_EvalError:
 			if err == nil {

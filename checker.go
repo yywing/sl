@@ -18,16 +18,21 @@ func (e *CheckError) Error() string {
 
 // Checker 实现类型检查
 type Checker struct {
-	env *Env
+	env     *Env
+	program *Program
 }
 
 // NewChecker 创建新的类型检查器
-func NewChecker(env *Env) *Checker {
-	return &Checker{env: env}
+func NewChecker(env *Env, program *Program) *Checker {
+	return &Checker{env: env, program: program}
 }
 
 // Check 检查表达式的类型
-func (tc *Checker) Check(node ast.ASTNode) (ast.ValueType, error) {
+func (tc *Checker) Check() (ast.ValueType, error) {
+	return tc.check(tc.program.ASTNode)
+}
+
+func (tc *Checker) check(node ast.ASTNode) (ast.ValueType, error) {
 	result, err := node.Accept(tc)
 	if err != nil {
 		return nil, err
@@ -43,8 +48,8 @@ func (tc *Checker) VisitLiteral(node *ast.LiteralNode) (interface{}, error) {
 }
 
 func (tc *Checker) VisitIdent(node *ast.IdentNode) (interface{}, error) {
-	if value, exists := tc.env.GetVariable(node.Name); exists {
-		return value.Type(), nil
+	if t, exists := tc.program.GetVariable(node.Name); exists {
+		return t, nil
 	}
 
 	return nil, &CheckError{
@@ -54,7 +59,7 @@ func (tc *Checker) VisitIdent(node *ast.IdentNode) (interface{}, error) {
 }
 
 func (tc *Checker) VisitMemberAccess(node *ast.MemberAccessNode) (interface{}, error) {
-	objectType, err := tc.Check(node.Object)
+	objectType, err := tc.check(node.Object)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +110,7 @@ func (tc *Checker) VisitFunctionCall(node *ast.FunctionCallNode) (interface{}, e
 	// 获取参数类型
 	argTypes := make([]ast.ValueType, len(args))
 	for i, arg := range args {
-		argType, err := tc.Check(arg)
+		argType, err := tc.check(arg)
 		if err != nil {
 			return nil, err
 		}
@@ -146,12 +151,12 @@ func (tc *Checker) VisitFunctionCall(node *ast.FunctionCallNode) (interface{}, e
 }
 
 func (tc *Checker) VisitIndex(node *ast.IndexNode) (interface{}, error) {
-	objectType, err := tc.Check(node.Object)
+	objectType, err := tc.check(node.Object)
 	if err != nil {
 		return nil, err
 	}
 
-	indexType, err := tc.Check(node.Index)
+	indexType, err := tc.check(node.Index)
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +187,7 @@ func (tc *Checker) VisitIndex(node *ast.IndexNode) (interface{}, error) {
 }
 
 func (tc *Checker) VisitConditional(node *ast.ConditionalNode) (interface{}, error) {
-	conditionType, err := tc.Check(node.Condition)
+	conditionType, err := tc.check(node.Condition)
 	if err != nil {
 		return nil, err
 	}
@@ -194,12 +199,12 @@ func (tc *Checker) VisitConditional(node *ast.ConditionalNode) (interface{}, err
 		}
 	}
 
-	trueType, err := tc.Check(node.TrueExpr)
+	trueType, err := tc.check(node.TrueExpr)
 	if err != nil {
 		return nil, err
 	}
 
-	falseType, err := tc.Check(node.FalseExpr)
+	falseType, err := tc.check(node.FalseExpr)
 	if err != nil {
 		return nil, err
 	}
@@ -223,14 +228,14 @@ func (tc *Checker) VisitList(node *ast.ListNode) (interface{}, error) {
 	}
 
 	// 检查第一个元素的类型作为列表元素类型
-	firstElemType, err := tc.Check(node.Elements[0])
+	firstElemType, err := tc.check(node.Elements[0])
 	if err != nil {
 		return nil, err
 	}
 
 	// 检查所有元素类型是否一致
 	for _, elem := range node.Elements[1:] {
-		elemType, err := tc.Check(elem)
+		elemType, err := tc.check(elem)
 		if err != nil {
 			return nil, err
 		}
@@ -251,24 +256,24 @@ func (tc *Checker) VisitMap(node *ast.MapNode) (interface{}, error) {
 
 	// 检查第一个条目的类型
 	firstEntry := node.Entries[0]
-	keyType, err := tc.Check(firstEntry.Key)
+	keyType, err := tc.check(firstEntry.Key)
 	if err != nil {
 		return nil, err
 	}
 
-	valueType, err := tc.Check(firstEntry.Value)
+	valueType, err := tc.check(firstEntry.Value)
 	if err != nil {
 		return nil, err
 	}
 
 	// 检查所有条目的类型一致性
 	for i, entry := range node.Entries[1:] {
-		entryKeyType, err := tc.Check(entry.Key)
+		entryKeyType, err := tc.check(entry.Key)
 		if err != nil {
 			return nil, err
 		}
 
-		entryValueType, err := tc.Check(entry.Value)
+		entryValueType, err := tc.check(entry.Value)
 		if err != nil {
 			return nil, err
 		}

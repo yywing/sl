@@ -7,21 +7,7 @@ import (
 
 // Env 表示执行环境，包含变量和函数
 type Env struct {
-	variables map[string]ast.Value    // 变量映射
 	functions map[string]ast.Function // 函数映射
-}
-
-// SetVariable 设置变量
-func (e *Env) SetVariable(name string, value ast.Value) {
-	e.variables[name] = value
-}
-
-// GetVariable 获取变量
-func (e *Env) GetVariable(name string) (ast.Value, bool) {
-	if value, exists := e.variables[name]; exists {
-		return value, true
-	}
-	return nil, false
 }
 
 // SetFunction 设置函数
@@ -37,15 +23,6 @@ func (e *Env) GetFunction(name string) (ast.Function, bool) {
 	return nil, false
 }
 
-// Variables 返回所有变量名
-func (e *Env) Variables() []string {
-	var names []string
-	for name := range e.variables {
-		names = append(names, name)
-	}
-	return names
-}
-
 // Functions 返回所有函数名
 func (e *Env) Functions() []string {
 	var names []string
@@ -55,9 +32,22 @@ func (e *Env) Functions() []string {
 	return names
 }
 
+func (e *Env) Check(p *Program) (ast.ValueType, error) {
+	checker := NewChecker(e, p)
+	return checker.Check()
+}
+
+func (e *Env) Run(p *Program, variables Variables) (ast.Value, error) {
+	if err := p.CheckVariables(variables); err != nil {
+		return nil, err
+	}
+
+	runner := NewRunner(e, p, variables)
+	return runner.Eval()
+}
+
 func newEnv() *Env {
 	return &Env{
-		variables: make(map[string]ast.Value),
 		functions: make(map[string]ast.Function),
 	}
 }
