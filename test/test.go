@@ -171,7 +171,7 @@ func GetTestVariables(t *testpb.SimpleTest) (sl.Variables, error) {
 		if err != nil {
 			return nil, err
 		}
-		// 特殊处理一下 a.b.c 这种形式
+		// Special handling for a.b.c format
 		if strings.Contains(k, ".") {
 			parts := strings.Split(k, ".")
 			k = parts[0]
@@ -203,7 +203,7 @@ func RunTestCase(testCase *testpb.SimpleTest) error {
 	varTypes := vars.Type()
 	program := sl.NewProgram(ast, varTypes)
 
-	// 填写默认值
+	// Fill in default values
 	if testCase.GetResultMatcher() == nil {
 		testCase.ResultMatcher = &testpb.SimpleTest_Value{
 			Value: &expr.Value{

@@ -5,13 +5,13 @@ import (
 	"strings"
 )
 
-// ASTNode 表示抽象语法树的节点
+// ASTNode represents an abstract syntax tree node
 type ASTNode interface {
 	String() string
 	Accept(visitor ASTVisitor) (interface{}, error)
 }
 
-// ASTVisitor 访问者模式接口
+// ASTVisitor visitor pattern interface
 type ASTVisitor interface {
 	VisitLiteral(node *LiteralNode) (interface{}, error)
 	VisitIdent(node *IdentNode) (interface{}, error)
@@ -24,7 +24,7 @@ type ASTVisitor interface {
 	VisitStruct(node *StructNode) (interface{}, error)
 }
 
-// LiteralNode 字面量节点
+// LiteralNode literal value node
 type LiteralNode struct {
 	Value Value
 }
@@ -37,10 +37,10 @@ func (n *LiteralNode) Accept(visitor ASTVisitor) (interface{}, error) {
 	return visitor.VisitLiteral(n)
 }
 
-// IdentNode 标识符节点
+// IdentNode identifier node
 type IdentNode struct {
 	Name       string
-	LeadingDot bool // 是否有前导点（.identifier）
+	LeadingDot bool // whether there is a leading dot (.identifier)
 }
 
 func (n *IdentNode) String() string {
@@ -54,11 +54,11 @@ func (n *IdentNode) Accept(visitor ASTVisitor) (interface{}, error) {
 	return visitor.VisitIdent(n)
 }
 
-// MemberAccessNode 成员访问节点 (obj.member)
+// MemberAccessNode member access node (obj.member)
 type MemberAccessNode struct {
 	Object   ASTNode
 	Member   string
-	Optional bool // 是否是可选访问 (obj.?member)
+	Optional bool // whether it's optional access (obj.?member)
 }
 
 func (n *MemberAccessNode) String() string {
@@ -73,10 +73,10 @@ func (n *MemberAccessNode) Accept(visitor ASTVisitor) (interface{}, error) {
 	return visitor.VisitMemberAccess(n)
 }
 
-// FunctionCallNode 函数调用节点
+// FunctionCallNode function call node
 type FunctionCallNode struct {
-	Function ASTNode   // 函数表达式，可以是标识符或成员访问
-	Args     []ASTNode // 参数列表
+	Function ASTNode   // function expression, can be identifier or member access
+	Args     []ASTNode // argument list
 }
 
 func (n *FunctionCallNode) String() string {
@@ -91,11 +91,11 @@ func (n *FunctionCallNode) Accept(visitor ASTVisitor) (interface{}, error) {
 	return visitor.VisitFunctionCall(n)
 }
 
-// IndexNode 索引访问节点 (obj[index])
+// IndexNode index access node (obj[index])
 type IndexNode struct {
 	Object   ASTNode
 	Index    ASTNode
-	Optional bool // 是否是可选索引 (obj[?index])
+	Optional bool // whether it's optional index (obj[?index])
 }
 
 func (n *IndexNode) String() string {
@@ -110,7 +110,7 @@ func (n *IndexNode) Accept(visitor ASTVisitor) (interface{}, error) {
 	return visitor.VisitIndex(n)
 }
 
-// ConditionalNode 条件表达式节点 (condition ? trueExpr : falseExpr)
+// ConditionalNode conditional expression node (condition ? trueExpr : falseExpr)
 type ConditionalNode struct {
 	Condition ASTNode
 	TrueExpr  ASTNode
@@ -125,7 +125,7 @@ func (n *ConditionalNode) Accept(visitor ASTVisitor) (interface{}, error) {
 	return visitor.VisitConditional(n)
 }
 
-// ListNode 列表字面量节点
+// ListNode list literal node
 type ListNode struct {
 	Elements []ASTNode
 }
@@ -142,7 +142,7 @@ func (n *ListNode) Accept(visitor ASTVisitor) (interface{}, error) {
 	return visitor.VisitList(n)
 }
 
-// MapNode 映射字面量节点
+// MapNode map literal node
 type MapNode struct {
 	Entries []MapEntry
 }
@@ -159,18 +159,18 @@ func (n *MapNode) Accept(visitor ASTVisitor) (interface{}, error) {
 	return visitor.VisitMap(n)
 }
 
-// MapEntry 映射条目
+// MapEntry map entry
 type MapEntry struct {
 	Key      ASTNode
 	Value    ASTNode
-	Optional bool // 是否是可选键 (?key: value)
+	Optional bool // whether it's an optional key (?key: value)
 }
 
-// StructNode 结构体字面量节点 (Message{field: value})
+// StructNode struct literal node (Message{field: value})
 type StructNode struct {
 	TypeName      string
 	Fields        []StructField
-	ReceiverStyle bool // 是否有前导点 (.Message{})
+	ReceiverStyle bool // whether there is a leading dot (.Message{})
 }
 
 func (n *StructNode) String() string {
@@ -193,14 +193,14 @@ func (n *StructNode) Accept(visitor ASTVisitor) (interface{}, error) {
 	return visitor.VisitStruct(n)
 }
 
-// StructField 表示结构体字段
+// StructField represents a struct field
 type StructField struct {
 	Name     string
 	Value    ASTNode
 	Optional bool
 }
 
-// 便利函数用于创建AST节点
+// Convenience functions for creating AST nodes
 func NewLiteral(value Value) *LiteralNode {
 	return &LiteralNode{Value: value}
 }

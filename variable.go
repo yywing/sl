@@ -6,7 +6,7 @@ type VariablesType map[string]ast.ValueType
 
 type Variables map[string]ast.Value
 
-// 获取变量类型定义
+// Get variable type definition
 func (v Variables) Type() VariablesType {
 	t := make(VariablesType)
 	for name, value := range v {

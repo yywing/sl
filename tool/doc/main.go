@@ -12,15 +12,15 @@ import (
 
 func main() {
 	var output string
-	flag.StringVar(&output, "output", "functions.md", "输出markdown文件路径")
+	flag.StringVar(&output, "output", "functions.md", "Output markdown file path")
 	flag.Parse()
 
 	env := sl.NewStdEnv()
 
-	// 生成markdown内容
+	// Generate markdown content
 	content := generateMarkdown(env)
 
-	// 写入文件
+	// Write to file
 	err := os.WriteFile(output, []byte(content), 0644)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to write file: %v\n", err)
@@ -35,28 +35,28 @@ func generateMarkdown(env *sl.Env) string {
 
 	builder.WriteString("# Functions\n\n")
 
-	// 创建表格头
+	// Create table header
 	builder.WriteString("| Name | Input | Output |\n")
 	builder.WriteString("|------|-------|--------|\n")
 
-	// 获取所有函数名并排序
+	// Get all function names and sort them
 	functionNames := env.Functions()
 	sort.Strings(functionNames)
 
 	for _, name := range functionNames {
 		function, _ := env.GetFunction(name)
 
-		// 获取函数的所有类型签名
+		// Get all type signatures for the function
 		types := function.Types()
 
 		for i, fnType := range types {
 			var functionName string
 			if i == 0 {
-				// 转义函数名中的管道符号
+				// Escape pipe symbols in function names
 				functionName = "`" + strings.ReplaceAll(name, "|", "\\|") + "`"
 			}
 
-			// 格式化输入参数
+			// Format input parameters
 			paramTypes := fnType.ParamTypes()
 			var inputStr string
 			if len(paramTypes) == 0 {
@@ -69,10 +69,10 @@ func generateMarkdown(env *sl.Env) string {
 				inputStr = strings.Join(paramStrings, ", ")
 			}
 
-			// 格式化输出类型
+			// Format output type
 			outputStr := fmt.Sprintf("`%s`", fnType.ReturnType().String())
 
-			// 添加表格行
+			// Add table row
 			builder.WriteString(fmt.Sprintf("| %s | %s | %s |\n",
 				functionName, inputStr, outputStr))
 		}

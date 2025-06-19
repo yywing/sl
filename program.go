@@ -18,7 +18,7 @@ func NewProgram(node ast.ASTNode, variablesType VariablesType) *Program {
 	}
 }
 
-// SetVariable 设置变量
+// SetVariable sets a variable
 func (e *Program) SetVariable(name string, value ast.ValueType) {
 	if e.variablesType == nil {
 		e.variablesType = make(VariablesType)
@@ -26,7 +26,7 @@ func (e *Program) SetVariable(name string, value ast.ValueType) {
 	e.variablesType[name] = value
 }
 
-// GetVariable 获取变量
+// GetVariable gets a variable
 func (e *Program) GetVariable(name string) (ast.ValueType, bool) {
 	if value, exists := e.variablesType[name]; exists {
 		return value, true
@@ -34,7 +34,7 @@ func (e *Program) GetVariable(name string) (ast.ValueType, bool) {
 	return nil, false
 }
 
-// Variables 返回所有变量名
+// Variables returns all variable names
 func (e *Program) Variables() []string {
 	var names []string
 	for name := range e.variablesType {

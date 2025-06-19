@@ -33,10 +33,10 @@ const (
 	Uint   = "uint"
 )
 
-// Function 表示一个可调用的函数
+// Function represents a callable function
 type Function interface {
 	Name() string
-	// 支持多种类型入参
+	// Supports multiple input parameter types
 	Types() []FunctionType
 	Call(args []Value) (Value, error)
 }
@@ -92,7 +92,7 @@ func (f *BaseFunction) Call(args []Value) (Value, error) {
 func (f *BaseFunction) AddDefinition(n Definition) error {
 	for _, d := range f.Definitions {
 		if d.Type.Equals(&n.Type) {
-			return fmt.Errorf("fucntion defintion already exist")
+			return fmt.Errorf("function definition already exists")
 		}
 	}
 	f.Definitions = append(f.Definitions, n)
@@ -108,7 +108,7 @@ func (f *BaseFunction) Combine(other *BaseFunction) *BaseFunction {
 	return nil
 }
 
-// 预定义函数
+// Predefined functions
 func NewBaseFunction(name string, d []Definition) *BaseFunction {
 	return &BaseFunction{name: name, Definitions: d}
 }

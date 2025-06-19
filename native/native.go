@@ -8,7 +8,7 @@ import (
 	"github.com/yywing/sl/ast"
 )
 
-// 将表达式语言的值转换为Go值
+// Convert expression language values to Go values
 func ValueToGo(v ast.Value) (interface{}, error) {
 	switch val := v.(type) {
 	case *ast.BoolValue:
@@ -30,13 +30,13 @@ func ValueToGo(v ast.Value) (interface{}, error) {
 			return nil, nil
 		}
 
-		// 先转换第一个元素，确定类型
+		// Convert the first element first to determine the type
 		firstGoVal, err := ValueToGo(val.ListValue[0])
 		if err != nil {
 			return nil, err
 		}
 
-		// 检查所有元素是否为同一类型
+		// Check if all elements are of the same type
 		firstType := reflect.TypeOf(firstGoVal)
 		allSameType := true
 		goVals := make([]interface{}, len(val.ListValue))
@@ -53,7 +53,7 @@ func ValueToGo(v ast.Value) (interface{}, error) {
 			}
 		}
 
-		// 如果所有元素类型相同，创建具体类型的slice
+		// If all elements are of the same type, create a concrete typed slice
 		if allSameType && firstType != nil {
 			sliceType := reflect.SliceOf(firstType)
 			slice := reflect.MakeSlice(sliceType, len(goVals), len(goVals))
@@ -62,7 +62,7 @@ func ValueToGo(v ast.Value) (interface{}, error) {
 			}
 			return slice.Interface(), nil
 		} else {
-			// 类型不同或有nil值，返回[]interface{}
+			// Different types or nil values, return []interface{}
 			return goVals, nil
 		}
 	case *ast.MapValue:
@@ -70,7 +70,7 @@ func ValueToGo(v ast.Value) (interface{}, error) {
 			return nil, nil
 		}
 
-		// 先处理第一个值，确定值的类型
+		// Process the first value first to determine the value type
 		var firstKeyType reflect.Type
 		var firstValueType reflect.Type
 		goMap := make(map[interface{}]interface{})
@@ -101,7 +101,7 @@ func ValueToGo(v ast.Value) (interface{}, error) {
 			}
 		}
 
-		// 根据key和value类型的一致性，创建相应类型的map
+		// Create corresponding map type based on key and value type consistency
 		var keyType, valueType reflect.Type
 
 		if allSameKeyType && firstKeyType != nil {
@@ -116,7 +116,7 @@ func ValueToGo(v ast.Value) (interface{}, error) {
 			valueType = reflect.TypeOf((*interface{})(nil)).Elem()
 		}
 
-		// 创建具体类型的map
+		// Create concrete typed map
 		mapType := reflect.MapOf(keyType, valueType)
 		typedMap := reflect.MakeMap(mapType)
 		for k, v := range goMap {
@@ -128,7 +128,7 @@ func ValueToGo(v ast.Value) (interface{}, error) {
 	}
 }
 
-// 从Go值转换为表达式语言值
+// Convert Go values to expression language values
 func ValueFromGo(v interface{}) ast.Value {
 	if v == nil {
 		return ast.NewNullValue()
@@ -155,16 +155,16 @@ func ValueFromGo(v interface{}) ast.Value {
 			// []byte
 			return ast.NewBytesValue(val.Bytes())
 		}
-		// 通用slice - 根据Go反射类型确定元素类型
+		// Generic slice - determine element type based on Go reflection type
 		values := make([]ast.Value, val.Len())
-		elemType := goTypeToValueType(val.Type().Elem()) // 使用实际的元素类型
+		elemType := goTypeToValueType(val.Type().Elem()) // Use actual element type
 		for i := 0; i < val.Len(); i++ {
 			values[i] = ValueFromGo(val.Index(i).Interface())
 		}
 		return ast.NewListValue(values, elemType)
 	case reflect.Map:
 		values := make(map[ast.Value]ast.Value)
-		// 根据Go反射类型确定key和value类型
+		// Determine key and value types based on Go reflection type
 		keyType := goTypeToValueType(val.Type().Key())
 		valueType := goTypeToValueType(val.Type().Elem())
 
@@ -179,7 +179,7 @@ func ValueFromGo(v interface{}) ast.Value {
 	}
 }
 
-// 将Go类型转换为表达式语言类型
+// Convert Go types to expression language types
 func goTypeToValueType(t reflect.Type) ast.ValueType {
 	switch t.Kind() {
 	case reflect.Bool:
@@ -200,9 +200,9 @@ func goTypeToValueType(t reflect.Type) ast.ValueType {
 	case reflect.Map:
 		return ast.NewMapType(goTypeToValueType(t.Key()), goTypeToValueType(t.Elem()))
 	case reflect.Pointer:
-		// 检查指针类型是否实现了ast.Value接口
+		// Check if pointer type implements ast.Value interface
 		if t.Implements(reflect.TypeOf((*ast.Value)(nil)).Elem()) {
-			// 创建一个零值实例来获取类型信息
+			// Create a zero value instance to get type information
 			zeroVal := reflect.Zero(t).Interface()
 			if val, ok := zeroVal.(ast.Value); ok {
 				return val.Type()
@@ -214,7 +214,7 @@ func goTypeToValueType(t reflect.Type) ast.ValueType {
 	}
 }
 
-// 将表达式语言类型转换为Go类型
+// Convert expression language types to Go types
 func goTypeToReflectType(t ast.ValueType) reflect.Type {
 	switch t.Kind() {
 	case ast.TypeKindBool:
@@ -234,33 +234,33 @@ func goTypeToReflectType(t ast.ValueType) reflect.Type {
 	case ast.TypeKindAny:
 		return reflect.TypeOf(any(nil))
 	case ast.TypeKindList:
-		// 获取具体的ListType
+		// Get concrete ListType
 		if listType, ok := t.(*ast.ListType); ok {
 			elemType := goTypeToReflectType(listType.ElementType())
 			return reflect.SliceOf(elemType)
 		}
-		// 回退到[]interface{}
+		// Fallback to []interface{}
 		return reflect.TypeOf([]interface{}{})
 	case ast.TypeKindMap:
-		// 获取具体的MapType
+		// Get concrete MapType
 		if mapType, ok := t.(*ast.MapType); ok {
 			keyType := goTypeToReflectType(mapType.KeyType())
 			valueType := goTypeToReflectType(mapType.ValueType())
 			return reflect.MapOf(keyType, valueType)
 		}
-		// 回退到map[string]interface{}
+		// Fallback to map[string]interface{}
 		return reflect.TypeOf(map[string]interface{}{})
 	default:
 		return reflect.TypeOf((*interface{})(nil)).Elem()
 	}
 }
 
-// NativeFunction 表示一个原生Go函数的包装
+// NativeFunction represents a wrapper for a native Go function
 type NativeFunction struct {
 	name string
 	fn   reflect.Value
 	typ  *ast.FunctionType
-	// 是参数的倒序列表
+	// Is a reverse list of parameters
 	defaultArgs []reflect.Value
 }
 
@@ -280,7 +280,7 @@ func (f *NativeFunction) Types() []ast.FunctionType {
 	return types
 }
 
-// 从后倒序往前
+// From back to front in reverse order
 func (f *NativeFunction) WithDefaultArg(value interface{}) *NativeFunction {
 	f.defaultArgs = append(f.defaultArgs, reflect.ValueOf(value))
 	return f
@@ -298,19 +298,19 @@ func (f *NativeFunction) Call(args []ast.Value) (result ast.Value, err error) {
 }
 
 func (f *NativeFunction) call(args []ast.Value) (ast.Value, error) {
-	// 检查参数数量
+	// Check parameter count
 	if len(args)+len(f.defaultArgs) < len(f.typ.ParamTypes()) {
 		return nil, fmt.Errorf("function %s expects at least %d arguments, got %d",
 			f.name, len(f.typ.ParamTypes())-len(f.defaultArgs), len(args))
 	}
-	// 将参数转换为reflect.Value
+	// Convert parameters to reflect.Value
 	reflectArgs := make([]reflect.Value, len(args))
 	for i, arg := range args {
 		goVal, err := ValueToGo(arg)
 		if err != nil {
 			return nil, fmt.Errorf("error converting argument %d for function %s: %v", i, f.name, err)
 		}
-		// 处理一下 空map 和 空slice
+		// Handle empty map and empty slice
 		if goVal != nil {
 			reflectArgs[i] = reflect.ValueOf(goVal)
 		} else {
@@ -318,17 +318,17 @@ func (f *NativeFunction) call(args []ast.Value) (ast.Value, error) {
 		}
 	}
 
-	// 补足默认参数
+	// Supplement default parameters
 	if len(args) < len(f.typ.ParamTypes()) {
 		def := f.defaultArgs[:len(f.typ.ParamTypes())-len(args)]
 		slices.Reverse(def)
 		reflectArgs = append(reflectArgs, def...)
 	}
 
-	// 调用函数
+	// Call function
 	results := f.fn.Call(reflectArgs)
 
-	// 处理返回值
+	// Handle return values
 	if len(results) == 0 {
 		return ast.NewNullValue(), nil
 	}
@@ -337,13 +337,13 @@ func (f *NativeFunction) call(args []ast.Value) (ast.Value, error) {
 		return ValueFromGo(results[0].Interface()), nil
 	}
 
-	// 多个返回值，检查最后一个是否是error
+	// Multiple return values, check if the last one is error
 	lastResult := results[len(results)-1]
 	if lastResult.Type().Implements(reflect.TypeOf((*error)(nil)).Elem()) {
 		if !lastResult.IsNil() {
 			return nil, lastResult.Interface().(error)
 		}
-		// 移除error返回值
+		// Remove error return value
 		results = results[:len(results)-1]
 	}
 
@@ -351,7 +351,7 @@ func (f *NativeFunction) call(args []ast.Value) (ast.Value, error) {
 		return ValueFromGo(results[0].Interface()), nil
 	}
 
-	// 多个返回值，包装为列表
+	// Multiple return values, wrap as list
 	values := make([]ast.Value, len(results))
 	var elemType ast.ValueType = ast.StringType
 	for i, res := range results {
@@ -363,7 +363,7 @@ func (f *NativeFunction) call(args []ast.Value) (ast.Value, error) {
 	return ast.NewListValue(values, elemType), nil
 }
 
-// 从Go函数创建Function
+// Create Function from Go function
 func NewNativeFunction(name string, fn interface{}) (*NativeFunction, error) {
 	fnVal := reflect.ValueOf(fn)
 	if fnVal.Kind() != reflect.Func {
@@ -372,16 +372,16 @@ func NewNativeFunction(name string, fn interface{}) (*NativeFunction, error) {
 
 	fnType := fnVal.Type()
 
-	// 构建参数类型
+	// Build parameter types
 	paramTypes := make([]ast.ValueType, fnType.NumIn())
 	for i := 0; i < fnType.NumIn(); i++ {
 		paramTypes[i] = goTypeToValueType(fnType.In(i))
 	}
 
-	// 构建返回类型
+	// Build return type
 	var returnType ast.ValueType = ast.NullType
 	if fnType.NumOut() > 0 {
-		// 如果最后一个返回值是error，忽略它
+		// If the last return value is error, ignore it
 		numOut := fnType.NumOut()
 		if fnType.Out(numOut - 1).Implements(reflect.TypeOf((*error)(nil)).Elem()) {
 			numOut--
@@ -390,8 +390,8 @@ func NewNativeFunction(name string, fn interface{}) (*NativeFunction, error) {
 		if numOut == 1 {
 			returnType = goTypeToValueType(fnType.Out(0))
 		} else if numOut > 1 {
-			// 多个返回值，创建列表类型
-			returnType = ast.NewListType(ast.StringType) // 简化处理
+			// Multiple return values, create list type
+			returnType = ast.NewListType(ast.StringType) // Simplified handling
 		}
 	}
 

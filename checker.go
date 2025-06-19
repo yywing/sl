@@ -6,7 +6,7 @@ import (
 	"github.com/yywing/sl/ast"
 )
 
-// CheckError 表示类型检查错误
+// CheckError represents type checking error
 type CheckError struct {
 	Message string
 	Node    ast.ASTNode
@@ -16,18 +16,18 @@ func (e *CheckError) Error() string {
 	return fmt.Sprintf("type check error: %s", e.Message)
 }
 
-// Checker 实现类型检查
+// Checker implements type checking
 type Checker struct {
 	env     *Env
 	program *Program
 }
 
-// NewChecker 创建新的类型检查器
+// NewChecker creates a new type checker
 func NewChecker(env *Env, program *Program) *Checker {
 	return &Checker{env: env, program: program}
 }
 
-// Check 检查表达式的类型
+// Check checks the type of expression
 func (tc *Checker) Check() (ast.ValueType, error) {
 	return tc.check(tc.program.ASTNode)
 }
@@ -107,7 +107,7 @@ func (tc *Checker) VisitFunctionCall(node *ast.FunctionCallNode) (interface{}, e
 		}
 	}
 
-	// 获取参数类型
+	// Get argument types
 	argTypes := make([]ast.ValueType, len(args))
 	for i, arg := range args {
 		argType, err := tc.check(arg)
@@ -117,7 +117,7 @@ func (tc *Checker) VisitFunctionCall(node *ast.FunctionCallNode) (interface{}, e
 		argTypes[i] = argType
 	}
 
-	// 检查参数类型
+	// Check argument types
 	fnTypes := f.Types()
 	resultEnv := make(map[string]ast.ValueType)
 	var foundFnType *ast.FunctionType
@@ -209,7 +209,7 @@ func (tc *Checker) VisitConditional(node *ast.ConditionalNode) (interface{}, err
 		return nil, err
 	}
 
-	// 检查两个分支的类型是否兼容
+	// Check if the types of both branches are compatible
 	if tc.isCompatible(trueType, falseType) {
 		return trueType, nil
 	} else if tc.isCompatible(falseType, trueType) {
@@ -227,13 +227,13 @@ func (tc *Checker) VisitList(node *ast.ListNode) (interface{}, error) {
 		return ast.NewListType(ast.AnyType), nil
 	}
 
-	// 检查第一个元素的类型作为列表元素类型
+	// Check the type of the first element as the list element type
 	firstElemType, err := tc.check(node.Elements[0])
 	if err != nil {
 		return nil, err
 	}
 
-	// 检查所有元素类型是否一致
+	// Check if all element types are consistent
 	for _, elem := range node.Elements[1:] {
 		elemType, err := tc.check(elem)
 		if err != nil {
@@ -250,11 +250,11 @@ func (tc *Checker) VisitList(node *ast.ListNode) (interface{}, error) {
 
 func (tc *Checker) VisitMap(node *ast.MapNode) (interface{}, error) {
 	if len(node.Entries) == 0 {
-		// 空映射
+		// Empty map
 		return ast.NewMapType(ast.AnyType, ast.AnyType), nil
 	}
 
-	// 检查第一个条目的类型
+	// Check the type of the first entry
 	firstEntry := node.Entries[0]
 	keyType, err := tc.check(firstEntry.Key)
 	if err != nil {
@@ -266,7 +266,7 @@ func (tc *Checker) VisitMap(node *ast.MapNode) (interface{}, error) {
 		return nil, err
 	}
 
-	// 检查所有条目的类型一致性
+	// Check type consistency of all entries
 	for i, entry := range node.Entries[1:] {
 		entryKeyType, err := tc.check(entry.Key)
 		if err != nil {
@@ -298,7 +298,7 @@ func (tc *Checker) isCompatible(t1, t2 ast.ValueType) bool {
 }
 
 func (tc *Checker) VisitStruct(node *ast.StructNode) (interface{}, error) {
-	// TODO: 暂时不支持 struct 语法
+	// TODO: struct syntax is not supported yet
 	return nil, &CheckError{
 		Message: "struct is not supported",
 		Node:    node,

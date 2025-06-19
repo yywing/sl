@@ -17,7 +17,7 @@ type Selector interface {
 	GetValueType(string) ValueType
 }
 
-// ValueType 表示表达式语言中的类型
+// ValueType represents the type in the expression language
 type ValueType interface {
 	Kind() string
 	String() string
@@ -47,7 +47,7 @@ const (
 	TypeKindAny      = "any"
 )
 
-// 基础类型实现
+// Basic type implementation
 type PrimitiveType struct {
 	kind      string
 	traitMask int
@@ -105,7 +105,7 @@ func (t *PrimitiveType) String() string {
 	return t.kind
 }
 
-// 预定义类型
+// Predefined types
 var (
 	BoolType = &PrimitiveType{
 		kind:      TypeKindBool,
@@ -253,7 +253,7 @@ var (
 	}
 )
 
-// 列表类型
+// List type
 type ListType struct {
 	*PrimitiveType
 	elementType ValueType
@@ -286,7 +286,7 @@ func NewListType(elementType ValueType) *ListType {
 	return &ListType{PrimitiveType: &PrimitiveType{kind: TypeKindList, traitMask: 0}, elementType: elementType}
 }
 
-// 映射类型
+// Map type
 type MapType struct {
 	*PrimitiveType
 	keyType   ValueType
@@ -328,7 +328,7 @@ func NewMapType(keyType, valueType ValueType) *MapType {
 	return &MapType{PrimitiveType: &PrimitiveType{kind: TypeKindMap, traitMask: SelectorType}, keyType: keyType, valueType: valueType}
 }
 
-// 函数类型
+// Function type
 type FunctionType struct {
 	*PrimitiveType
 	name       string

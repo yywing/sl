@@ -12,7 +12,7 @@ import (
 	"github.com/yywing/sl/parser"
 )
 
-// ParseError 表示解析错误
+// ParseError represents a parsing error
 type ParseError struct {
 	Message string
 	Line    int
@@ -23,7 +23,7 @@ func (e *ParseError) Error() string {
 	return fmt.Sprintf("parse error at line %d, column %d: %s", e.Line, e.Column, e.Message)
 }
 
-// ErrorListener 实现antlr.ErrorListener接口
+// ErrorListener implements the antlr.ErrorListener interface
 type ErrorListener struct {
 	Errors []ParseError
 }
@@ -37,50 +37,50 @@ func (e *ErrorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol
 }
 
 func (e *ErrorListener) ReportAmbiguity(recognizer antlr.Parser, dfa *antlr.DFA, startIndex, stopIndex int, exact bool, ambigAlts *antlr.BitSet, configs *antlr.ATNConfigSet) {
-	// 可以选择处理二义性
+	// Can choose to handle ambiguity
 }
 
 func (e *ErrorListener) ReportAttemptingFullContext(recognizer antlr.Parser, dfa *antlr.DFA, startIndex, stopIndex int, conflictingAlts *antlr.BitSet, configs *antlr.ATNConfigSet) {
-	// 可以选择处理全上下文尝试
+	// Can choose to handle full context attempts
 }
 
 func (e *ErrorListener) ReportContextSensitivity(recognizer antlr.Parser, dfa *antlr.DFA, startIndex, stopIndex int, prediction int, configs *antlr.ATNConfigSet) {
-	// 可以选择处理上下文敏感性
+	// Can choose to handle context sensitivity
 }
 
-// ASTBuilder 实现parser.BaseSLVisitor来构建AST
+// ASTBuilder implements parser.BaseSLVisitor to build AST
 type ASTBuilder struct {
 	parser.BaseSLVisitor
 }
 
-// Parse 解析表达式字符串并返回AST
+// Parse parses an expression string and returns an AST
 func Parse(expression string) (ast.ASTNode, error) {
-	// 创建输入流
+	// Create input stream
 	input := antlr.NewInputStream(expression)
 
-	// 创建词法分析器
+	// Create lexer
 	lexer := parser.NewSLLexer(input)
 
-	// 创建token流
+	// Create token stream
 	stream := antlr.NewCommonTokenStream(lexer, 0)
 
-	// 创建语法分析器
+	// Create parser
 	p := parser.NewSLParser(stream)
 
-	// 添加错误监听器
+	// Add error listener
 	errorListener := &ErrorListener{}
 	p.RemoveErrorListeners()
 	p.AddErrorListener(errorListener)
 
-	// 解析
+	// Parse
 	tree := p.Start_()
 
-	// 检查是否有解析错误
+	// Check for parsing errors
 	if len(errorListener.Errors) > 0 {
 		return nil, &errorListener.Errors[0]
 	}
 
-	// 构建AST
+	// Build AST
 	builder := &ASTBuilder{}
 	result := builder.Visit(tree)
 
@@ -94,7 +94,7 @@ func Parse(expression string) (ast.ASTNode, error) {
 	}
 }
 
-// Visit 根据节点类型分发到具体的访问方法
+// Visit dispatches to specific visit methods based on node type
 func (v *ASTBuilder) Visit(tree antlr.ParseTree) interface{} {
 	switch t := tree.(type) {
 	case parser.IStartContext:
@@ -133,7 +133,7 @@ func (v *ASTBuilder) VisitExpr(ctx parser.IExprContext) interface{} {
 	condition := v.Visit(ctx.GetE()).(ast.ASTNode)
 
 	if ctx.GetOp() != nil && ctx.GetE1() != nil && ctx.GetE2() != nil {
-		// 条件表达式 condition ? trueExpr : falseExpr
+		// Conditional expression condition ? trueExpr : falseExpr
 		trueExpr := v.Visit(ctx.GetE1()).(ast.ASTNode)
 		falseExpr := v.Visit(ctx.GetE2()).(ast.ASTNode)
 		return ast.NewConditional(condition, trueExpr, falseExpr)
@@ -189,7 +189,7 @@ func (v *ASTBuilder) VisitRelation(ctx parser.IRelationContext) interface{} {
 		return v.Visit(ctx.Calc())
 	}
 
-	// 二元关系操作
+	// Binary relation operations
 	if ctx.GetChildCount() == 3 {
 		left := v.Visit(ctx.GetChild(0).(antlr.ParseTree)).(ast.ASTNode)
 		right := v.Visit(ctx.GetChild(2).(antlr.ParseTree)).(ast.ASTNode)
@@ -223,7 +223,7 @@ func (v *ASTBuilder) VisitCalc(ctx parser.ICalcContext) interface{} {
 		return v.Visit(ctx.Unary())
 	}
 
-	// 二元算术操作
+	// Binary arithmetic operations
 	if ctx.GetChildCount() == 3 {
 		left := v.Visit(ctx.GetChild(0).(antlr.ParseTree)).(ast.ASTNode)
 		right := v.Visit(ctx.GetChild(2).(antlr.ParseTree)).(ast.ASTNode)
@@ -249,7 +249,7 @@ func (v *ASTBuilder) VisitCalc(ctx parser.ICalcContext) interface{} {
 }
 
 func (v *ASTBuilder) VisitUnary(ctx parser.IUnaryContext) interface{} {
-	// 检查具体的Context类型
+	// Check specific Context type
 	switch unaryCtx := ctx.(type) {
 	case *parser.MemberExprContext:
 		if member := unaryCtx.Member(); member != nil {
@@ -258,7 +258,7 @@ func (v *ASTBuilder) VisitUnary(ctx parser.IUnaryContext) interface{} {
 	case *parser.LogicalNotContext:
 		if member := unaryCtx.Member(); member != nil {
 			memberNode := v.Visit(member).(ast.ASTNode)
-			// 处理逻辑非操作符
+			// Handle logical NOT operator
 			ops := unaryCtx.GetOps()
 			result := memberNode
 			for range ops {
@@ -269,7 +269,7 @@ func (v *ASTBuilder) VisitUnary(ctx parser.IUnaryContext) interface{} {
 	case *parser.NegateContext:
 		if member := unaryCtx.Member(); member != nil {
 			memberNode := v.Visit(member).(ast.ASTNode)
-			// 处理负号操作符
+			// Handle negation operator
 			ops := unaryCtx.GetOps()
 			result := memberNode
 			for range ops {
@@ -282,7 +282,7 @@ func (v *ASTBuilder) VisitUnary(ctx parser.IUnaryContext) interface{} {
 }
 
 func (v *ASTBuilder) VisitMember(ctx parser.IMemberContext) interface{} {
-	// 检查具体的Context类型
+	// Check specific Context type
 	switch memberCtx := ctx.(type) {
 	case *parser.PrimaryExprContext:
 		if primary := memberCtx.Primary(); primary != nil {
@@ -292,7 +292,7 @@ func (v *ASTBuilder) VisitMember(ctx parser.IMemberContext) interface{} {
 		if member := memberCtx.Member(); member != nil {
 			memberNode := v.Visit(member).(ast.ASTNode)
 			fieldName := ""
-			// 获取字段名
+			// Get field name
 			if id := memberCtx.GetId(); id != nil {
 				if escapedCtx, ok := id.(*parser.SimpleIdentifierContext); ok {
 					fieldName = escapedCtx.GetId().GetText()
@@ -325,7 +325,7 @@ func (v *ASTBuilder) VisitMember(ctx parser.IMemberContext) interface{} {
 }
 
 func (v *ASTBuilder) VisitPrimary(ctx parser.IPrimaryContext) interface{} {
-	// 检查具体的Context类型
+	// Check specific Context type
 	switch primaryCtx := ctx.(type) {
 	case *parser.ConstantLiteralContext:
 		if literal := primaryCtx.Literal(); literal != nil {
@@ -363,7 +363,7 @@ func (v *ASTBuilder) VisitPrimary(ctx parser.IPrimaryContext) interface{} {
 		}
 		return ast.NewMap(entries)
 	case *parser.CreateMessageContext:
-		// 构建类型名称
+		// Build type name
 		var typeName string
 		ids := primaryCtx.GetIds()
 		if len(ids) > 0 {
@@ -375,7 +375,7 @@ func (v *ASTBuilder) VisitPrimary(ctx parser.IPrimaryContext) interface{} {
 		}
 		receiverStyle := primaryCtx.GetLeadingDot() != nil
 
-		// 处理字段初始化列表
+		// Handle field initialization list
 		var fields []ast.StructField
 		if entriesCtx := primaryCtx.GetEntries(); entriesCtx != nil {
 			fields = v.VisitFieldInitializerList(entriesCtx.(*parser.FieldInitializerListContext))
@@ -386,7 +386,7 @@ func (v *ASTBuilder) VisitPrimary(ctx parser.IPrimaryContext) interface{} {
 }
 
 func (v *ASTBuilder) VisitLiteral(ctx parser.ILiteralContext) interface{} {
-	// 检查具体的子Context类型
+	// Check specific child Context type
 	switch literalCtx := ctx.(type) {
 	case *parser.IntContext:
 		text := literalCtx.GetTok().GetText()
@@ -479,7 +479,7 @@ func (v *ASTBuilder) VisitListInit(ctx parser.IListInitContext) []ast.ASTNode {
 	listInitCtx := ctx.(*parser.ListInitContext)
 	var elements []ast.ASTNode
 	for _, elem := range listInitCtx.GetElems() {
-		// 处理可选表达式
+		// Handle optional expressions
 		if optExpr, ok := elem.(*parser.OptExprContext); ok {
 			elements = append(elements, v.Visit(optExpr.GetE()).(ast.ASTNode))
 		}
@@ -511,7 +511,7 @@ func (v *ASTBuilder) visitOptExpr(ctx parser.IOptExprContext) ast.ASTNode {
 	return nil
 }
 
-// VisitFieldInitializerList 处理字段初始化列表
+// VisitFieldInitializerList handles field initialization list
 func (v *ASTBuilder) VisitFieldInitializerList(ctx *parser.FieldInitializerListContext) []ast.StructField {
 	if ctx == nil {
 		return nil
@@ -523,7 +523,7 @@ func (v *ASTBuilder) VisitFieldInitializerList(ctx *parser.FieldInitializerListC
 			fieldName := ""
 			optional := false
 
-			// 获取字段名和是否可选
+			// Get field name and whether it's optional
 			if optFieldCtx, ok := fieldCtx.(*parser.OptFieldContext); ok {
 				optional = optFieldCtx.GetOpt() != nil
 				if escapedCtx := optFieldCtx.EscapeIdent(); escapedCtx != nil {

@@ -2,14 +2,14 @@ package ast
 
 import "fmt"
 
-// Value 表示运行时的值
+// Value represents a runtime value
 type Value interface {
 	Type() ValueType
 	Equal(other Value) bool
 	String() string
 }
 
-// 基础值类型
+// Basic value types
 type BoolValue struct {
 	BoolValue bool
 }
@@ -180,7 +180,7 @@ func (v *TypeValue) Equal(other Value) bool {
 }
 func (v *TypeValue) String() string { return fmt.Sprintf("type<%s>", v.Value) }
 
-// 创建值的便利函数
+// Convenience functions for creating values
 func NewBoolValue(v bool) *BoolValue        { return &BoolValue{BoolValue: v} }
 func NewIntValue(v int64) *IntValue         { return &IntValue{IntValue: v} }
 func NewUintValue(v uint64) *UintValue      { return &UintValue{UintValue: v} }

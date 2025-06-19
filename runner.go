@@ -6,7 +6,7 @@ import (
 	"github.com/yywing/sl/ast"
 )
 
-// RuntimeError 表示运行时错误
+// RuntimeError represents runtime error
 type RuntimeError struct {
 	Message string
 	Node    ast.ASTNode
@@ -16,19 +16,19 @@ func (e *RuntimeError) Error() string {
 	return fmt.Sprintf("runtime error: %s", e.Message)
 }
 
-// Runner 实现表达式求值
+// Runner implements expression evaluation
 type Runner struct {
 	env       *Env
 	program   *Program
 	variables Variables
 }
 
-// NewRunner 创建新的求值器
+// NewRunner creates a new evaluator
 func NewRunner(env *Env, program *Program, variables Variables) *Runner {
 	return &Runner{env: env, program: program, variables: variables}
 }
 
-// Eval 求值表达式
+// Eval evaluates the expression
 func (runner *Runner) Eval() (ast.Value, error) {
 	return runner.eval(runner.program.ASTNode)
 }
@@ -78,7 +78,7 @@ func (runner *Runner) VisitMemberAccess(node *ast.MemberAccessNode) (interface{}
 			Node:    node,
 		}
 	default:
-		// 对于其他类型，简化处理
+		// For other types, simplified handling
 		if node.Optional {
 			return ast.NewNullValue(), nil
 		}
@@ -114,12 +114,12 @@ func (runner *Runner) VisitFunctionCall(node *ast.FunctionCallNode) (interface{}
 		}
 	}
 
-	// 求值参数
+	// Evaluate arguments
 	argValues := make([]ast.Value, len(args))
 	for i, arg := range args {
 		argValue, err := runner.eval(arg)
 		if err != nil {
-			// 特殊处理一下 or
+			// Special handling for or
 			if fn.Name() == ast.LogicalOr {
 				argValue = ast.NewBoolValue(false)
 			} else {
@@ -129,7 +129,7 @@ func (runner *Runner) VisitFunctionCall(node *ast.FunctionCallNode) (interface{}
 		argValues[i] = argValue
 	}
 
-	// 调用函数
+	// Call function
 	result, err := fn.Call(argValues)
 	if err != nil {
 		return nil, err
@@ -286,10 +286,10 @@ func (runner *Runner) VisitMap(node *ast.MapNode) (interface{}, error) {
 
 // TODO:
 func (runner *Runner) VisitStruct(node *ast.StructNode) (interface{}, error) {
-	// // 创建一个映射来表示结构体实例
+	// // Create a map to represent struct instance
 	// values := make(map[string]ast.Value)
 
-	// // 求值所有字段
+	// // Evaluate all fields
 	// for _, field := range node.Fields {
 	// 	value, err := runner.eval(field.Value)
 	// 	if err != nil {
@@ -298,8 +298,8 @@ func (runner *Runner) VisitStruct(node *ast.StructNode) (interface{}, error) {
 	// 	values[field.Name] = value
 	// }
 
-	// // 返回一个映射值来表示结构体实例
-	// // 在更完整的实现中，可能需要专门的StructValue类型
+	// // Return a map value to represent struct instance
+	// // In a more complete implementation, a dedicated StructValue type may be needed
 	// return ast.NewMapValue(values, ast.StringType, ast.StringType), nil
 	return nil, fmt.Errorf("not implemented")
 }

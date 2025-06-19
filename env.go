@@ -5,17 +5,17 @@ import (
 	"github.com/yywing/sl/lib/functions"
 )
 
-// Env 表示执行环境，包含变量和函数
+// Env represents the execution environment, containing variables and functions
 type Env struct {
-	functions map[string]ast.Function // 函数映射
+	functions map[string]ast.Function // function mapping
 }
 
-// SetFunction 设置函数
+// SetFunction sets a function
 func (e *Env) SetFunction(name string, fn ast.Function) {
 	e.functions[name] = fn
 }
 
-// GetFunction 获取函数
+// GetFunction gets a function
 func (e *Env) GetFunction(name string) (ast.Function, bool) {
 	if fn, exists := e.functions[name]; exists {
 		return fn, true
@@ -23,7 +23,7 @@ func (e *Env) GetFunction(name string) (ast.Function, bool) {
 	return nil, false
 }
 
-// Functions 返回所有函数名
+// Functions returns all function names
 func (e *Env) Functions() []string {
 	var names []string
 	for name := range e.functions {
