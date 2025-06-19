@@ -1,0 +1,41 @@
+name: "encoders_ext"
+description: "Tests for the encoders extension library."
+section: {
+  name: "encode"
+  test: {
+    name: "hello"
+    expr: "base64Encode(b'hello')"
+    value: {
+      string_value: "aGVsbG8="
+    }
+  }
+}
+
+section: {
+  name: "decode"
+  test: {
+    name: "hello"
+    expr: "base64Decode('aGVsbG8=')"
+    value: {
+      bytes_value: "hello"
+    }
+  }
+  test: {
+    name: "hello_without_padding"
+    expr: "base64Decode('aGVsbG8')"
+    value: {
+      bytes_value: "hello"
+    }
+  }
+}
+
+section: {
+  name: "round_trip"
+  test: {
+    name: "hello"
+    expr: "base64Decode(base64Encode(b'Hello World!'))"
+    value: {
+      bytes_value: "Hello World!"
+    }
+  }
+}

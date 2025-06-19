@@ -7,28 +7,29 @@ import (
 	"unicode/utf8"
 
 	"github.com/dlclark/regexp2"
+	"github.com/yywing/sl/ast"
 	"github.com/yywing/sl/native"
 )
 
 func init() {
-	LibFunctions["contains"] = native.MustNewNativeFunction("contains", Contains)
-	LibFunctions["startsWith"] = native.MustNewNativeFunction("startsWith", StartsWith)
-	LibFunctions["endsWith"] = native.MustNewNativeFunction("endsWith", EndsWith)
-	LibFunctions["matches"] = native.MustNewNativeFunction("matches", Matches)
-	LibFunctions["charAt"] = native.MustNewNativeFunction("charAt", CharAt)
-	LibFunctions["indexOf"] = native.MustNewNativeFunction("indexOf", IndexOf).WithDefaultArg(int64(0))
-	LibFunctions["lastIndexOf"] = native.MustNewNativeFunction("lastIndexOf", LastIndexOf).WithDefaultArg(int64(-1))
-	LibFunctions["lowerAscii"] = native.MustNewNativeFunction("lowerAscii", LowerASCII)
-	LibFunctions["replace"] = native.MustNewNativeFunction("replace", Replace).WithDefaultArg(int64(-1))
-	LibFunctions["split"] = native.MustNewNativeFunction("split", Split).WithDefaultArg(int64(-1))
-	LibFunctions["substring"] = native.MustNewNativeFunction("substring", Substring).WithDefaultArg(int64(-1))
-	LibFunctions["trim"] = native.MustNewNativeFunction("trim", Trim)
-	LibFunctions["upperAscii"] = native.MustNewNativeFunction("upperAscii", UpperASCII)
+	LibFunctions["contains"] = ast.NewBaseFunction("contains", native.MustNewNativeFunction("contains", Contains).Definitions())
+	LibFunctions["startsWith"] = ast.NewBaseFunction("startsWith", native.MustNewNativeFunction("startsWith", StartsWith).Definitions())
+	LibFunctions["endsWith"] = ast.NewBaseFunction("endsWith", native.MustNewNativeFunction("endsWith", EndsWith).Definitions())
+	LibFunctions["matches"] = ast.NewBaseFunction("matches", native.MustNewNativeFunction("matches", Matches).Definitions())
+	LibFunctions["charAt"] = ast.NewBaseFunction("charAt", native.MustNewNativeFunction("charAt", CharAt).Definitions())
+	LibFunctions["indexOf"] = ast.NewBaseFunction("indexOf", native.MustNewNativeFunction("indexOf", IndexOf).WithDefaultArg(int64(0)).Definitions())
+	LibFunctions["lastIndexOf"] = ast.NewBaseFunction("lastIndexOf", native.MustNewNativeFunction("lastIndexOf", LastIndexOf).WithDefaultArg(int64(-1)).Definitions())
+	LibFunctions["lowerAscii"] = ast.NewBaseFunction("lowerAscii", native.MustNewNativeFunction("lowerAscii", LowerASCII).Definitions())
+	LibFunctions["replace"] = ast.NewBaseFunction("replace", native.MustNewNativeFunction("replace", Replace).WithDefaultArg(int64(-1)).Definitions())
+	LibFunctions["split"] = ast.NewBaseFunction("split", native.MustNewNativeFunction("split", Split).WithDefaultArg(int64(-1)).Definitions())
+	LibFunctions["substring"] = ast.NewBaseFunction("substring", native.MustNewNativeFunction("substring", Substring).WithDefaultArg(int64(-1)).Definitions())
+	LibFunctions["trim"] = ast.NewBaseFunction("trim", native.MustNewNativeFunction("trim", Trim).Definitions())
+	LibFunctions["upperAscii"] = ast.NewBaseFunction("upperAscii", native.MustNewNativeFunction("upperAscii", UpperASCII).Definitions())
 	// TODO
 	// LibFunctions["format"] = native.MustNewNativeFunction("format", Format)
-	LibFunctions["quote"] = native.MustNewNativeFunction("quote", Quote)
-	LibFunctions["join"] = native.MustNewNativeFunction("join", Join).WithDefaultArg("")
-	LibFunctions["reverse"] = native.MustNewNativeFunction("reverse", Reverse)
+	LibFunctions["quote"] = ast.NewBaseFunction("quote", native.MustNewNativeFunction("quote", Quote).Definitions())
+	LibFunctions["join"] = ast.NewBaseFunction("join", native.MustNewNativeFunction("join", Join).WithDefaultArg("").Definitions())
+	LibFunctions["reverse"] = ast.NewBaseFunction("reverse", native.MustNewNativeFunction("reverse", Reverse).Definitions())
 }
 
 func Contains(s, substr string) bool {

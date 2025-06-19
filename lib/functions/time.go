@@ -22,13 +22,13 @@ func init() {
 	ast.IntFunction.Combine(IntFunction)
 	ast.StringFunction.Combine(StringFunction)
 
-	LibFunctions["now"] = native.MustNewNativeFunction("now", Now)
-	LibFunctions["getFullYear"] = native.MustNewNativeFunction("getFullYear", GetFullYear).WithDefaultArg("")
-	LibFunctions["getMonth"] = native.MustNewNativeFunction("getMonth", GetMonth).WithDefaultArg("")
-	LibFunctions["getDayOfYear"] = native.MustNewNativeFunction("getDayOfYear", GetDayOfYear).WithDefaultArg("")
-	LibFunctions["getDate"] = native.MustNewNativeFunction("getDate", GetDayOfMonthOneBased).WithDefaultArg("")
-	LibFunctions["getDayOfMonth"] = native.MustNewNativeFunction("getDayOfMonth", GetDayOfMonthZeroBased).WithDefaultArg("")
-	LibFunctions["getDayOfWeek"] = native.MustNewNativeFunction("getDayOfWeek", GetDayOfWeek).WithDefaultArg("")
+	LibFunctions["now"] = ast.NewBaseFunction("now", native.MustNewNativeFunction("now", Now).Definitions())
+	LibFunctions["getFullYear"] = ast.NewBaseFunction("getFullYear", native.MustNewNativeFunction("getFullYear", GetFullYear).WithDefaultArg("").Definitions())
+	LibFunctions["getMonth"] = ast.NewBaseFunction("getMonth", native.MustNewNativeFunction("getMonth", GetMonth).WithDefaultArg("").Definitions())
+	LibFunctions["getDayOfYear"] = ast.NewBaseFunction("getDayOfYear", native.MustNewNativeFunction("getDayOfYear", GetDayOfYear).WithDefaultArg("").Definitions())
+	LibFunctions["getDate"] = ast.NewBaseFunction("getDate", native.MustNewNativeFunction("getDate", GetDayOfMonthOneBased).WithDefaultArg("").Definitions())
+	LibFunctions["getDayOfMonth"] = ast.NewBaseFunction("getDayOfMonth", native.MustNewNativeFunction("getDayOfMonth", GetDayOfMonthZeroBased).WithDefaultArg("").Definitions())
+	LibFunctions["getDayOfWeek"] = ast.NewBaseFunction("getDayOfWeek", native.MustNewNativeFunction("getDayOfWeek", GetDayOfWeek).WithDefaultArg("").Definitions())
 	LibFunctions["getHours"] = GetHoursFunction
 	LibFunctions["getMinutes"] = GetMinutesFunction
 	LibFunctions["getSeconds"] = GetSecondsFunction
