@@ -208,6 +208,12 @@ func goTypeToValueType(t reflect.Type) ast.ValueType {
 			}
 		}
 		panic(fmt.Sprintf("unsupported pointer type: %v", t))
+	case reflect.Interface:
+		// Check if it's the any type (interface{})
+		if t == reflect.TypeOf((*interface{})(nil)).Elem() {
+			return ast.AnyType
+		}
+		panic(fmt.Sprintf("unsupported interface type: %v", t))
 	default:
 		panic(fmt.Sprintf("unsupported type: %T", t))
 	}

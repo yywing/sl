@@ -1,0 +1,11 @@
+name: "json"
+description: "Tests for json"
+section {
+  name: "jsonPath"
+  description: "JSONPath"
+  test {
+    name: "jsonPath"
+    expr: "jsonPath('{\"a\": true}', 'a')[0]"
+    value: { bool_value: true }
+  }
+}

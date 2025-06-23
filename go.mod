@@ -7,6 +7,7 @@ require (
 	github.com/antlr4-go/antlr/v4 v4.13.1
 	github.com/dlclark/regexp2 v1.11.5
 	github.com/google/go-cmp v0.6.0
+	github.com/ohler55/ojg v1.26.6
 	google.golang.org/protobuf v1.36.6
 )
 
