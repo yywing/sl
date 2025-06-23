@@ -1,0 +1,27 @@
+name: "url"
+description: "Tests for url"
+section {
+  name: "url"
+  description: "Test url."
+  test {
+    name: "urlDecode"
+    expr: "urlDecode('http:%2F%2Fexample.com%3Fa=b')"
+    value: { string_value: "http://example.com?a=b" }
+  }
+  test {
+    name: "urlDecode2"
+    expr: "urlDecode('%68%74%74%70%3A%2F%2F%65%78%61%6D%70%6C%65%2E%63%6F%6D%3F%61%3D%62')"
+    value: { string_value: "http://example.com?a=b" }
+  }
+  test {
+    name: "urlEncode"
+    expr: "urlEncode('http://example.com?a=b')"
+    value: { string_value: "http%3A%2F%2Fexample.com%3Fa%3Db" }
+  }
+  test {
+    name: "urlEncode2"
+    expr: "urlEncode('YGVjaG8gemZpaSA+IHZyZHoudHh0YA==')"
+    value: { string_value: "YGVjaG8gemZpaSA%2BIHZyZHoudHh0YA%3D%3D" }
+  }
+
+}
