@@ -1,0 +1,16 @@
+name: "xml"
+description: "Tests for xml"
+section {
+  name: "xml"
+  description: "xml"
+  test {
+    name: "xmlAttr"
+    expr: "xmlPath('<?xml version=\"1.0\"?><bookstore><book id=\"bk101\"><title>XML Developer</title></book></bookstore>', '/bookstore/book')[0].xmlAttr('id')"
+    value: { string_value: "bk101" }
+  }
+  test {
+    name: "xmlText"
+    expr: "xmlPath('<?xml version=\"1.0\"?><bookstore><book id=\"bk101\"><title>XML Developer</title></book></bookstore>', '/bookstore/book')[0].xmlElement('title')[0].xmlText()"
+    value: { string_value: "XML Developer" }
+  }
+}
