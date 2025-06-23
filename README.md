@@ -1,6 +1,6 @@
 # sl
 
-Subset of CEL (Common Expression Language)
+Fast, portable, non-Turing complete expression evaluation. Subset of CEL (Common Expression Language)
 
 ## difference with cel
 
