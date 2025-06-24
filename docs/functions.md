@@ -78,6 +78,10 @@
 | `_in_` | `dyn_A`, `list<dyn_A>` | `bool` |
 |  | `dyn_A`, `map<dyn_A, dyn_B>` | `bool` |
 | `_\|\|_` | `bool`, `bool` | `bool` |
+| `base64Decode` | `string` | `bytes` |
+|  | `bytes` | `bytes` |
+| `base64Encode` | `string` | `string` |
+|  | `bytes` | `string` |
 | `bool` | `bool` | `bool` |
 |  | `string` | `bool` |
 | `bytes` | `bytes` | `bytes` |
@@ -129,6 +133,7 @@
 |  | `timestamp` | `int` |
 | `join` | `list<string>`, `string` | `string` |
 |  | `list<string>` | `string` |
+| `jsonPath` | `string`, `string` | `list<any>` |
 | `lastIndexOf` | `string`, `string`, `int` | `int` |
 |  | `string`, `string` | `int` |
 | `lowerAscii` | `string` | `string` |
@@ -165,3 +170,9 @@
 |  | `int` | `uint` |
 |  | `string` | `uint` |
 | `upperAscii` | `string` | `string` |
+| `urlDecode` | `string` | `string` |
+| `urlEncode` | `string` | `string` |
+| `xmlAttr` | `xml`, `string` | `string` |
+| `xmlElement` | `xml`, `string` | `list<xml>` |
+| `xmlPath` | `string`, `string` | `list<xml>` |
+| `xmlText` | `xml` | `string` |
