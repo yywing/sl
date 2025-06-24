@@ -48,7 +48,7 @@ func NewHTTPRequestValueFromRequest(req *http.Request) (*HTTPRequestValue, error
 		}
 	}
 
-	raw, err := httputil.DumpRequestOut(req, true)
+	raw, err := httputil.DumpRequest(req, true)
 	if err != nil {
 		return nil, err
 	}
