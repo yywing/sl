@@ -66,7 +66,7 @@ func (runner *Runner) VisitMemberAccess(node *ast.MemberAccessNode) (interface{}
 	}
 
 	switch obj := object.(type) {
-	case *ast.MapValue:
+	case ast.Selector:
 		if value, exists := obj.Get(ast.NewStringValue(node.Member)); exists {
 			return value, nil
 		}
@@ -74,7 +74,7 @@ func (runner *Runner) VisitMemberAccess(node *ast.MemberAccessNode) (interface{}
 			return ast.NewNullValue(), nil
 		}
 		return nil, &RuntimeError{
-			Message: fmt.Sprintf("map does not have member: %s", node.Member),
+			Message: fmt.Sprintf("selector does not have member: %s", node.Member),
 			Node:    node,
 		}
 	default:

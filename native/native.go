@@ -213,6 +213,9 @@ func goTypeToValueType(t reflect.Type) ast.ValueType {
 		if t == reflect.TypeOf((*interface{})(nil)).Elem() {
 			return ast.AnyType
 		}
+		if t.Implements(reflect.TypeOf((*ast.Value)(nil)).Elem()) {
+			return reflect.TypeOf(reflect.Zero(t).Interface()).(ast.Value).Type()
+		}
 		panic(fmt.Sprintf("unsupported interface type: %v", t))
 	default:
 		panic(fmt.Sprintf("unsupported type: %T", t))

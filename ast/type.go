@@ -13,10 +13,6 @@ const (
 	SelectorType = 1 << iota
 )
 
-type Selector interface {
-	GetValueType(string) ValueType
-}
-
 // ValueType represents the type in the expression language
 type ValueType interface {
 	Kind() string
@@ -77,10 +73,7 @@ func (t *PrimitiveType) Equals(other ValueType) bool {
 		return true
 	}
 
-	if o, ok := other.(*PrimitiveType); ok {
-		return t.kind == o.kind
-	}
-	return false
+	return t.kind == other.Kind()
 }
 
 func (t *PrimitiveType) ConvertTo(v Value, ty ValueType) (Value, error) {

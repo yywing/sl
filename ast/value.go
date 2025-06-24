@@ -9,6 +9,10 @@ type Value interface {
 	String() string
 }
 
+type Selector interface {
+	Get(key Value) (Value, bool)
+}
+
 // Basic value types
 type BoolValue struct {
 	BoolValue bool
