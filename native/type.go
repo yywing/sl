@@ -1,7 +1,6 @@
 package native
 
 import (
-	"fmt"
 	"reflect"
 	"sync"
 
@@ -63,7 +62,6 @@ func (t *NativeSelectorType[T]) Member(name string) ast.ValueType {
 }
 
 func (t *NativeSelectorType[T]) Get(v T, key string) (ast.Value, bool) {
-	fmt.Println(key)
 	index, ok := t.fields[key]
 	if !ok {
 		return nil, false
