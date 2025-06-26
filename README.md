@@ -1,6 +1,8 @@
 # sl
 
-Fast, portable, non-Turing complete expression evaluation. Subset of CEL (Common Expression Language)
+- Fast, portable, non-Turing complete expression evaluation.
+- Provide a rich function library for web POC development.
+- Subset of CEL (Common Expression Language)
 
 ## difference with cel
 

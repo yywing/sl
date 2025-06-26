@@ -65,7 +65,14 @@ func TestHTTPRequestType(t *testing.T) {
 			variables: sl.Variables{
 				"request": value,
 			},
-			expr: "request.url",
+			expr: "request.url.scheme",
+			want: ast.NewStringValue("https"),
+		},
+		{
+			variables: sl.Variables{
+				"request": value,
+			},
+			expr: "string(request.url)",
 			want: ast.NewStringValue("https://example.com"),
 		},
 		{
