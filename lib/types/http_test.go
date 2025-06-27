@@ -55,7 +55,7 @@ func TestHTTPRequestType(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	value, err := types.NewHTTPRequestValueFromRequest(req)
+	value, err := types.NewHTTPRequestFromRequest(req)
 	if err != nil {
 		t.Fatal(err)
 	}

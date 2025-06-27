@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/yywing/sl/ast"
 )
@@ -33,6 +34,10 @@ func NewTimestampValue(sec int64, nanoSec int64, tz string) *TimestampValue {
 		NSec: nanoSec,
 		TZ:   tz,
 	}
+}
+
+func NewTimestampValueWithTime(t *time.Time) *TimestampValue {
+	return NewTimestampValue(t.Unix(), t.Sub(time.Unix(t.Unix(), 0)).Nanoseconds(), t.Location().String())
 }
 
 func (v *TimestampValue) Type() ast.ValueType {

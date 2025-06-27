@@ -14,13 +14,15 @@ import (
 )
 
 const (
-	TypeKindURL         = "url"
-	TypeKindHTTPRequest = "http_request"
+	TypeKindURL          = "url"
+	TypeKindHTTPRequest  = "http_request"
+	TypeKindHTTPResponse = "http_response"
 )
 
 var (
-	URLType         = native.NewNativeSelectorType[*URL](TypeKindURL)
-	HTTPRequestType = native.NewNativeSelectorType[*HTTPRequestValue](TypeKindHTTPRequest)
+	URLType          = native.NewNativeSelectorType[*URL](TypeKindURL)
+	HTTPRequestType  = native.NewNativeSelectorType[*HTTPRequest](TypeKindHTTPRequest)
+	HTTPResponseType = native.NewNativeSelectorType[*HTTPResponse](TypeKindHTTPResponse)
 )
 
 type URL struct {
@@ -81,18 +83,18 @@ func (v *URL) Get(key ast.Value) (ast.Value, bool) {
 	}
 }
 
-type HTTPRequestValue struct {
-	URL     *URL              `sl:"url"`
-	Raw     []byte            `sl:"raw"`
-	Method  string            `sl:"method"`
-	Headers map[string]string `sl:"headers"`
-	Body    []byte            `sl:"body"`
+type HTTPRequest struct {
+	URL       *URL   `sl:"url"`
+	Raw       []byte `sl:"raw"`
+	Method    string `sl:"method"`
+	RawHeader []byte `sl:"raw_header"`
+	Body      []byte `sl:"body"`
 
-	ContentType string `sl:"content_type"`
-	RawHeader   []byte `sl:"raw_header"`
+	ContentType string            `sl:"content_type"`
+	Headers     map[string]string `sl:"headers"`
 }
 
-func NewHTTPRequestValueFromRequest(req *http.Request) (*HTTPRequestValue, error) {
+func NewHTTPRequestFromRequest(req *http.Request) (*HTTPRequest, error) {
 	headers := make(map[string]string)
 	var contentType string
 	for k, v := range req.Header {
@@ -121,7 +123,7 @@ func NewHTTPRequestValueFromRequest(req *http.Request) (*HTTPRequestValue, error
 		return nil, err
 	}
 
-	return &HTTPRequestValue{
+	return &HTTPRequest{
 		URL:         NewURL(req.URL.String()),
 		Raw:         raw,
 		Method:      req.Method,
@@ -132,22 +134,70 @@ func NewHTTPRequestValueFromRequest(req *http.Request) (*HTTPRequestValue, error
 	}, nil
 }
 
-func (v *HTTPRequestValue) Type() ast.ValueType {
+func (v *HTTPRequest) Type() ast.ValueType {
 	return HTTPRequestType
 }
 
-func (v *HTTPRequestValue) String() string {
+func (v *HTTPRequest) String() string {
 	return v.URL.URL
 }
 
-func (v *HTTPRequestValue) Equal(other ast.Value) bool {
+func (v *HTTPRequest) Equal(other ast.Value) bool {
 	return false
 }
 
-func (v *HTTPRequestValue) Get(key ast.Value) (ast.Value, bool) {
+func (v *HTTPRequest) Get(key ast.Value) (ast.Value, bool) {
 	switch key.Type().Kind() {
 	case ast.TypeKindString:
 		return HTTPRequestType.Get(v, key.(*ast.StringValue).StringValue)
+	default:
+		return nil, false
+	}
+}
+
+type HTTPResponse struct {
+	URL       *URL   `sl:"url"`
+	Raw       []byte `sl:"raw"`
+	Status    int    `sl:"status"`
+	RawHeader []byte `sl:"raw_header"`
+	Body      []byte `sl:"body"`
+	RawCert   []byte `sl:"raw_cert"`
+	Cert      Cert   `sl:"cert"`
+
+	Latency     int               `sl:"latency"`
+	ContentType string            `sl:"content_type"`
+	Headers     map[string]string `sl:"headers"`
+	BodyString  string            `sl:"body_string"`
+	Title       []byte            `sl:"title"`
+	TitleString string            `sl:"title_string"`
+}
+
+func NewHTTPResponseFromResponse(resp *http.Response) (*HTTPResponse, error) {
+	req := util.GetFristRequest(resp)
+
+	return &HTTPResponse{
+		// TODO: 空指针
+		URL: NewURL(req.URL.String()),
+		// TODO: 其它属性
+	}, nil
+}
+
+func (v *HTTPResponse) Type() ast.ValueType {
+	return HTTPResponseType
+}
+
+func (v *HTTPResponse) String() string {
+	return v.URL.URL
+}
+
+func (v *HTTPResponse) Equal(other ast.Value) bool {
+	return false
+}
+
+func (v *HTTPResponse) Get(key ast.Value) (ast.Value, bool) {
+	switch key.Type().Kind() {
+	case ast.TypeKindString:
+		return HTTPResponseType.Get(v, key.(*ast.StringValue).StringValue)
 	default:
 		return nil, false
 	}

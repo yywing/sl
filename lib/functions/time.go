@@ -74,7 +74,7 @@ var (
 					if result.Unix() < types.MinUnixTime || result.Unix() > types.MaxUnixTime {
 						return nil, fmt.Errorf("timestamp overflow")
 					}
-					return exportTimestamp(&result), nil
+					return types.NewTimestampValueWithTime(&result), nil
 				},
 			},
 			{
@@ -89,7 +89,7 @@ var (
 					if result.Unix() < types.MinUnixTime || result.Unix() > types.MaxUnixTime {
 						return nil, fmt.Errorf("timestamp overflow")
 					}
-					return exportTimestamp(&result), nil
+					return types.NewTimestampValueWithTime(&result), nil
 				},
 			},
 		},
@@ -120,7 +120,7 @@ var (
 					if result.Unix() < types.MinUnixTime || result.Unix() > types.MaxUnixTime {
 						return nil, fmt.Errorf("timestamp overflow")
 					}
-					return exportTimestamp(&result), nil
+					return types.NewTimestampValueWithTime(&result), nil
 				},
 			},
 			{
@@ -292,7 +292,7 @@ var (
 						return nil, fmt.Errorf("timestamp overflow")
 					}
 					t := time.Unix(int64(i), 0).In(time.UTC)
-					return exportTimestamp(&t), nil
+					return types.NewTimestampValueWithTime(&t), nil
 				},
 			},
 			{
@@ -305,7 +305,7 @@ var (
 					if t.Unix() < types.MinUnixTime || t.Unix() > types.MaxUnixTime {
 						return nil, fmt.Errorf("timestamp overflow")
 					}
-					return exportTimestamp(&t), nil
+					return types.NewTimestampValueWithTime(&t), nil
 				},
 			},
 		},
@@ -528,13 +528,9 @@ func loadTimestamp(v *types.TimestampValue, tz string) (*time.Time, error) {
 	return &t, nil
 }
 
-func exportTimestamp(t *time.Time) *types.TimestampValue {
-	return types.NewTimestampValue(t.Unix(), t.Sub(time.Unix(t.Unix(), 0)).Nanoseconds(), t.Location().String())
-}
-
 func Now() *types.TimestampValue {
 	t := time.Now()
-	return exportTimestamp(&t)
+	return types.NewTimestampValueWithTime(&t)
 }
 
 func GetFullYear(v *types.TimestampValue, tz string) (int64, error) {
